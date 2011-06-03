@@ -69,7 +69,8 @@ function display (category) {
 					<li><?=$this->html->link('Hem', 'news/index');?></li>
 					<li><?=$this->html->link('Fordon', 'objects/index');?></li>
 					<li><?=$this->html->link('Skadeflöde', 'damages/index');?></li>
-					<li><?=$this->html->link('Ägare', 'owners/index');?></li>			
+					<li><?=$this->html->link('Ägare', 'owners/index');?></li>
+					<li><?=$this->html->link('Statistik', 'damages/statistics');?></li>			
 				</ul>
 			</div>
 			

@@ -96,6 +96,29 @@ class DamagesController extends \lithium\action\Controller {
 		return compact('damage', 'object', 'owner', 'type', 'logs');
 	}
 	
+	public function statistics() {
+		$damages = Damages::all();
+		
+		// Calc damages per object
+		foreach($damages as $damage)
+			$objectDist[] = $damage->object_id;
+		$objectDist = array_count_values($objectDist);
+		arsort($objectDist);
+		$objectDist = array_slice($objectDist, 0, 10, true);
+		
+		
+		foreach($damages as $damage)
+			$codeDist[] = $damage->code;
+		$damageCount = count($codeDist);
+		$codeDist = array_count_values($codeDist);
+		arsort($codeDist);
+		$codeArr = Damages::getCodeArray();
+		foreach($codeDist as $key => $val)
+			$groups[] = array($codeArr[$key], ($val * 100) / $damageCount . '%', $val);
+		
+		return compact('objectDist', 'groups');
+	}
+	
 }
 
 ?>
