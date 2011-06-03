@@ -29,23 +29,11 @@ class ObjectsController extends \lithium\action\Controller {
 		
 		$object = Objects::find($objectID);
 		$damages = $object->getDamages();
-		$allDam = Damages::find('all', array('conditions' => array('object_id' => $objectID)));
 		$owner = $object->getOwner();
 		$type = $object->getType();
 		
-		if(count($allDam) > 0)
-		{
-			$codeArr = Damages::getCodeArray();
-			
-			foreach($allDam as $damage)
-				$codes[] = $damage->code;
-			$codeCount = array_count_values($codes);
-			
-			$groups = array();
-			foreach($codeCount as $key => $val)
-				$groups[] = array($codeArr[$key], ($val * 100) / count($codes) . '%');
-		}
-		return compact('object', 'damages', 'owner', 'type', 'groups');
+		
+		return compact('object', 'damages', 'owner', 'type');
 	}
 	
 	public function archive($objectID) {
@@ -92,6 +80,25 @@ class ObjectsController extends \lithium\action\Controller {
 		}
 				
         return compact('object', 'types', 'owners');
+	}
+	
+	public function statistics($objectID)
+	{
+		$allDam = Damages::find('all', array('conditions' => array('object_id' => $objectID)));
+		if(count($allDam) > 0)
+		{
+			$codeArr = Damages::getCodeArray();
+			
+			foreach($allDam as $damage)
+				$codes[] = $damage->code;
+			$codeCount = array_count_values($codes);
+			
+			$groups = array();
+			foreach($codeCount as $key => $val)
+				$groups[] = array($codeArr[$key], ($val * 100) / count($codes) . '%', $val);
+		}
+		
+		return compact('groups');
 	}
 	
 	public function deactivate($id) {

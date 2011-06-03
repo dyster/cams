@@ -25,25 +25,10 @@
 		<?php echo (acls::getAllowedAction($_SESSION['user']['id'], 'objects', 'edit'))?'<li style="display: inline;">'.$this->html->link('Ändra', '/objects/edit/'.$object->id, array('class' => 'knapp')).'</li>':'' ?>
 		<?php echo (acls::getAllowedAction($_SESSION['user']['id'], 'objects', 'deactivate'))?'<li style="display: inline;">'.$this->html->link('Avaktivera', '/objects/deactivate/'.$object->id, array('class' => 'knapp')).'</li>':'' ?>
 		<?php echo '<li style="display: inline;">'.$this->html->link('Arkiv', '/objects/archive/'.$object->id, array('class' => 'knapp')).'</li>'; ?>
+		<?php echo '<li style="display: inline;">'.$this->html->link('Statistik', '/objects/statistics/'.$object->id, array('class' => 'knapp')).'</li>'; ?>
 	</ul>
 
 <!--<?=$this->html->link('Lägg till hjulmått', '/wheeldims/add/'.$object->id);?>-->
-
-<?php if(isset($groups) && false == true) { ?>
-<table>
-	<thead>
-		<tr>
-			<th colspan="<?=count($groups);?>">Skadedistribution</th>
-		</tr>
-	</thead>
-	<tr>
-		<?php foreach($groups as $val) echo '<td>'.$val[0].'</td>'; ?>
-	</tr>
-	<tr>
-		<?php foreach($groups as $val) echo '<td>'.$val[1].'</td>'; ?>
-	</tr>
-</table>
-<?php } ?>
 
 <hr />
 
