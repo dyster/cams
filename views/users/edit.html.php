@@ -10,6 +10,8 @@
 <?=$this->form->create($user); ?>
 <?=$this->form->field('username'); ?>
 <?=$this->form->field('fullname'); ?>
+<?=$this->form->field('email'); ?>
+<?=$this->form->field('owner_id', array('type' => 'select','list' => $owners, 'label' => 'Företag'));?>
 <?=$this->form->submit('Ändra'); ?>
 <?=$this->form->end(); ?>
 

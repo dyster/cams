@@ -6,6 +6,7 @@ use lithium\security\Auth;
 use cams\models\Users;
 use cams\models\acos;
 use cams\models\acls;
+use cams\models\Owners;
 
 use li3_flash_message\extensions\storage\FlashMessage;
 
@@ -18,11 +19,12 @@ class UsersController extends \lithium\action\Controller {
 
     public function add() {
         $user = Users::create($this->request->data);
-
+		foreach(Owners::all() as $owner)
+			$owners[$owner->id] = $owner->short;
         if (($this->request->data) && $user->save()) {
             return $this->redirect('Users::index');
         }
-        return compact('user');
+        return compact('user', 'owners');
     }
 	
 	public function login() {
@@ -65,13 +67,16 @@ class UsersController extends \lithium\action\Controller {
 		$defaultacos = acos::all(array('conditions' => array('default' => '1'), 'order' => 'controller'));
 		$allowed = acls::getAllowedAcos($userID);
 		$user = Users::find($userID);
+		foreach(Owners::all() as $owner)
+			$owners[$owner->id] = $owner->short;
 		
 		if($this->request->data && $user->save($this->request->data))
 		{
 			FlashMessage::Write('Användare ändrad', array('class' => 'success'));
 		}
 		
-		return compact('acos', 'allowed', 'user', 'defaultacos', 'publicacos');
+		
+		return compact('acos', 'allowed', 'user', 'defaultacos', 'publicacos', 'owners');
 	}
 	
 	public function flip($acoID, $userID){

@@ -1,9 +1,16 @@
 <?php
 namespace cams\models;
 
+use cams\models\Owners;
+
 class Users extends \lithium\data\Model {
-	public $validates =  array('email' => array(array('email', 'message' => 'Din email är ej giltig'))
-							 );
+			
+		public $validates =  array('email' => array(array('email', 'message' => 'Din email är ej giltig')) );
+							 
+		public function getOwner($record)
+		{
+			return Owners::find($record->owner_id);
+		}
 }			
 
 Users::applyFilter('save', function($self, $params, $chain){
