@@ -8,7 +8,7 @@ use cams\models\Ticket;
 class NewsController extends \lithium\action\Controller {
 
 	public function index() {
-		$news = News::all(array('limit' => '6', 'order' => 'created DESC'));
+		$news = News::all(array('limit' => '4', 'order' => 'created DESC'));
 		$usertickets = Ticket::all(array('conditions' => array('user_id' => $_SESSION['user']['id']), 'limit' => 30, 'order' => 'created DESC'));
 		return compact('news', 'usertickets');
 	}
