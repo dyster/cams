@@ -5,16 +5,3 @@
 <?=$this->form->field('email', array('label' => 'Email')); ?>
 <?=$this->form->submit('Skapa'); ?>
 <?=$this->form->end(); ?>
-<pre>
-<?php
-use cams\models\Owners;
-//$own = Owners::all();
-$own = Owners::find('all', array('fields' => array('short') ));
-//foreach($own as $o)
-//	print_r($o->short);
-//print_r($own->data());
-print_r($own->data());
-print_r($own->to('array'));
-
-?>
-</pre>
