@@ -1,0 +1,97 @@
+#spacer {
+	height: 100px;
+	min-height: 100px;
+}
+
+#userbox {
+	z-index: 2000;
+	position: absolute;
+	top: 0px;
+	right: 15px;
+	display: block;
+	padding: 1em 1em 1em 1em;
+}
+
+#footer {
+	position: fixed;
+	bottom: 0px;
+	min-width: 800px;
+}
+
+#footer li {
+	display: inline;
+	margin-left: 10px;
+}
+
+#content {	
+	position: relative;
+	padding: 20px 20px 0 260px;
+	width: auto;
+}
+
+.buttonbox li{
+	display: inline;
+	padding: 1em;
+}
+
+.buttonbox ul{
+	display: none;
+}
+
+.buttonbox:hover ul {
+	display: block;
+}
+
+.buttonbox:hover .hidebuttons {
+	display: none;
+}
+
+.show li, .hide li {
+	margin-left: 15px;
+}
+
+.show, .show li {
+	display:block;
+	
+	
+}
+.hide, .hide li {
+	display:none;
+}
+
+#topmenu {
+	padding: 0 0 0 50px;
+}
+
+#topmenu ul {
+	margin: 0;
+}
+
+#topmenu li {
+	display: inline-block;
+	padding: 5px 15px 5px 15px;
+	
+	margin: 0 0 0 15px;
+}
+
+#searchbox {
+	width: 210px;
+	margin: 0;
+	padding: 0;
+	display: inline;
+}
+
+#searchbox input[type=text] {
+	width: 185px;
+	margin: 0;
+	clear: right;
+	padding: 0;
+	display: inline;
+}
+
+#searchbox input[type=submit] {
+	padding: 0;
+	margin: 0;
+	float: right;
+	height: 22px;
+}
