@@ -15,4 +15,13 @@
 <?=$this->form->submit('Ändra'); ?>
 <?=$this->form->end(); ?>
 
+<h2>Ändra lösenord</h2>
+
+<?=$this->form->create(); ?>
+<?=$this->form->field('oldpassword', array('type' => 'password', 'label' => 'Nuvarande Lösenord')); ?>
+<?=$this->form->field('password1', array('type' => 'password', 'label' => 'Nytt Lösenord')); ?>
+<?=$this->form->field('password2', array('type' => 'password', 'label' => 'Skriv igen')); ?>
+<?=$this->form->submit('Ändra Lösenord'); ?>
+<?=$this->form->end(); ?>
+
 

@@ -102,17 +102,36 @@ class UsersController extends \lithium\action\Controller {
 		if($auth)
 		{
 			$user = Users::first($auth['id']);
-			
-			if($this->request->data && $user->save($this->request->data))
+			if($this->request->data)
 			{
-				FlashMessage::Write('Användare ändrad', array('class' => 'success'));
+				if(!empty($this->request->data['password1']) && !empty($this->request->data['password2']))
+				{
+					if(\lithium\util\String::hash($this->request->data['oldpassword']) == $user->password)
+					{
+						if($this->request->data['password1'] == $this->request->data['password2'])
+						{
+							$user->password = \lithium\util\String::hash($this->request->data['password1']);
+							if($user->save())
+								$_SESSION['notifications'][] = array('class' => 'success', 'text' => 'Lösenordet ändrat');
+						}
+						else
+							$_SESSION['notifications'][] = array('class' => 'fail', 'text' => 'Dom nya lösenorden matchar inte');
+					}	
+					else
+						$_SESSION['notifications'][] = array('class' => 'fail', 'text' => 'Fel lösenord');
+				}
+				elseif($user->save($this->request->data))
+				{
+					FlashMessage::Write('Användaruppgifter ändrade', array('class' => 'success'));
+				}
 			}
-			
+						
 			return compact('user');
 		}
 		else
 			return $this->redirect('Users::login');
 	}
+	
 	
 	public function password($userID)
 	{
