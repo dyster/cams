@@ -10,8 +10,8 @@ use li3_flash_message\extensions\storage\FlashMessage;
 class ObjectsController extends \lithium\action\Controller {
 
 	public function index($a = 20, $b = 20) {
-		$objects = Objects::find('all', array('order' => 'id DESC', 'limit' => $a));
-		$prio1s = Damages::find('all', array('conditions' => array('prio' => 1, 'active' => 1), 'order' => 'created DESC', 'limit' => $b)); // , 'fields' => array('object_id')
+		$objects = Objects::find('all', array('order' => 'id DESC', 'limit' => $b));
+		$prio1s = Damages::find('all', array('conditions' => array('prio' => 1, 'active' => 1), 'order' => 'created DESC', 'limit' => $a)); // , 'fields' => array('object_id')
 		$prios = array();
 		foreach($prio1s as $dam)
 		{
