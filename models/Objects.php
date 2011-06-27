@@ -6,6 +6,8 @@ use cams\models\Types;
 
 class Objects extends \lithium\data\Model {
 	
+		public $belongsTo = array('Owners');
+	
 		public $validates = array('name' => 'Nummer saknas');
 		
 		public function getOwner($record)

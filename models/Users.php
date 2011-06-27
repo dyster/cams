@@ -4,6 +4,8 @@ namespace cams\models;
 use cams\models\Owners;
 
 class Users extends \lithium\data\Model {
+	
+		public $belongsTo = array('Owners');
 			
 		public $validates =  array('email' => array(array('email', 'message' => 'Din email är ej giltig')) );
 							 
