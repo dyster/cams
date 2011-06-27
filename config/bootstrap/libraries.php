@@ -59,7 +59,7 @@ define('LITHIUM_APP_PATH', dirname(dirname(__DIR__)));
  * directory as your application.  If you use the same libraries in multiple applications, you can
  * set this to a shared path on your server.
  */
-define('LITHIUM_LIBRARY_PATH', '/var/www/lithium/libraries');
+define('LITHIUM_LIBRARY_PATH', dirname(LITHIUM_APP_PATH) . '/libraries');
 
 /**
  * Locate and load Lithium core library files.  Throws a fatal error if the core can't be found.
@@ -122,6 +122,4 @@ Libraries::add('cams', array('default' => true));
  */
 // Libraries::add('li3_docs');
 Libraries::add('li3_flash_message');
-
-
 ?>
