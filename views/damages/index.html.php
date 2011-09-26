@@ -4,13 +4,14 @@
 <table>
 	<thead>
 		<tr>
-			<th>Inlagd</th><th>Fordon</th><th>Skada</th><th>Prio</th><th>Inlagd av</th>
+			<th>Inlagd</th><th>Fordon</th><th>Grupp</th><th>Skada</th><th>Prio</th><th>Inlagd av</th>
 		</tr>
 	</thead>
 	<?php foreach($damages as $damage) { $object = $damage->getObject(); ?>
 	<tr>
 		<td><?=substr($damage->created, 0, 16);?></td>
 		<td> <?=$this->html->link($object->toString(), 'objects/view/'.$object->id);?></td>
+		<td><?=$object->group;?></td>
 		<td><?=$this->html->link($damage->short, 'damages/view/'.$damage->id);?></td>
 		<td style="<?php switch($damage->prio)
 	{
@@ -22,7 +23,7 @@
 	</tr>	
 	<?php } ?>
 	<tfoot>
-		<tr><td colspan="5">Visa <?php foreach($antal as $a) echo $this->html->link($a, "/damages/index/$a/20/20").' '; ?></td></tr>
+		<tr><td colspan="6">Visa <?php foreach($antal as $a) echo $this->html->link($a, "/damages/index/$a/20/20").' '; ?></td></tr>
 	</tfoot>	
 </table>
 
@@ -31,13 +32,14 @@
 <table>
 	<thead>
 		<tr>
-			<th>Inlagd</th><th>Fordon</th><th>Skada</th><th>Prio</th><th>Ändrad av</th>
+			<th>Inlagd</th><th>Fordon</th><th>Grupp</th><th>Skada</th><th>Prio</th><th>Ändrad av</th>
 		</tr>
 	</thead>
 	<?php foreach($modifieddamages as $damage) { $object = $damage->getObject(); ?>
 	<tr>
 		<td><?=substr($damage->created, 0, 16);?></td>
 		<td> <?=$this->html->link($object->toString(), 'objects/view/'.$object->id);?></td>
+		<td><?=$object->group;?></td>
 		<td><?=$this->html->link($damage->short, 'damages/view/'.$damage->id);?></td>
 		<td style="<?php switch($damage->prio)
 	{
@@ -58,7 +60,7 @@
 <table>
 	<thead>
 		<tr>
-			<th>Inlagd</th><th>Fordon</th><th>Skada</th><th>Prio</th><th>Kvitterad</th><th>Av</th>
+			<th>Inlagd</th><th>Fordon</th><th>Grupp</th><th>Skada</th><th>Prio</th><th>Kvitterad</th><th>Av</th>
 		</tr>
 	</thead>
 	<?php foreach($nulleddamages as $damage) { $object = $damage->getObject(); ?>
@@ -66,6 +68,7 @@
 		<td><?=substr($damage->created, 0, 16);?></td>
 		<!--<td><?=(strtotime($damage->modified) > 0)?$damage->modified:"N/A";?></td>-->
 		<td> <?=$this->html->link($object->toString(), 'objects/view/'.$object->id);?></td>
+		<td><?=$object->group;?></td>
 		<td><?=$this->html->link($damage->short, 'damages/view/'.$damage->id);?></td>
 		<td style="<?php switch($damage->prio)
 	{

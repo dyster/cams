@@ -4,17 +4,22 @@
 <table style="border: solid 2px #fd8888;">
 	<thead>
 		<tr>
-			<th>Körförbud sedan</th><th>Plats</th><th>Typ</th><th>Nr</th><th>Ägare</th>
+			<th>Körförbud sedan</th><th>Plats</th><th>Typ</th><th>Nr</th><th>Grupp</th><th>Ägare</th>
 		</tr>
 	</thead>
 <?php foreach ($prioobjects as $object) 
 { ?>
 	<tr>
-    	<td><?=substr($object->getPrio1Date(),0,10);?></td><td><?=$object->getPrio1Location();?></td><td><?=$object->getType()->name; ?></td><td><?=$this->html->link($object->name, 'objects/view/'.$object->id);?></td><td><?=$object->getOwner()->name; ?></td>
+    	<td><?=substr($object->getPrio1Date(),0,10);?></td>
+    	<td><?=$object->getPrio1Location();?></td>
+    	<td><?=$object->getType()->name; ?></td>
+    	<td><?=$this->html->link($object->name, 'objects/view/'.$object->id);?></td>
+    	<td><?=$object->group;?></td>
+    	<td><?=$object->getOwner()->name; ?></td>
     </tr>
 <?php } ?>
 	<tfoot>
-		<tr><td colspan="5">Visa <?php foreach($antal as $a) echo $this->html->link($a, "/objects/index/$a/20").' '; ?></td></tr>
+		<tr><td colspan="6">Visa <?php foreach($antal as $a) echo $this->html->link($a, "/objects/index/$a/20").' '; ?></td></tr>
 	</tfoot>
 </table>
 <?php } ?>
@@ -24,17 +29,21 @@
 <table>
 	<thead>
 		<tr>
-			<th></th><th>Typ</th><th>Nr</th><th>Ägare</th>
+			<th></th><th>Typ</th><th>Nr</th><th>Grupp</th><th>Ägare</th>
 		</tr>
 	</thead>
 <?php foreach ($objects as $object) 
 { ?>
 	<tr>
-    	<td><?=substr($object->created,0,10);?></td><td><?=$object->getType()->name; ?></td><td><?=$this->html->link($object->name, 'objects/view/'.$object->id);?></td><td><?=$object->getOwner()->name; ?></td>
+    	<td><?=substr($object->created,0,10);?></td>
+    	<td><?=$object->getType()->name; ?></td>
+    	<td><?=$this->html->link($object->name, 'objects/view/'.$object->id);?></td>
+    	<td><?=$object->group;?></td>
+    	<td><?=$object->getOwner()->name; ?></td>
     </tr>
 <?php } ?>
 	<tfoot>
-		<tr><td colspan="4">Visa <?php foreach($antal as $a) echo $this->html->link($a, "/objects/index/20/$a").' '; ?></td></tr>
+		<tr><td colspan="5">Visa <?php foreach($antal as $a) echo $this->html->link($a, "/objects/index/20/$a").' '; ?></td></tr>
 	</tfoot>
 </table>
 <?php } ?>

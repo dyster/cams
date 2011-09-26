@@ -14,6 +14,9 @@
 <tr>
 	<td>Noteringar</td><td><?=$object->notes;?></td>
 </tr>
+<tr>
+	<td>Grupp</td><td><?=$object->group;?></td>
+</tr>
 <?php preg_match_all('/(\\d\\d) (\\d\\d) ([0-9]{4}) ([0-9]{3})-(\\d)/', $object->name, $result, PREG_PATTERN_ORDER);
  //print_r($result); 
  if(!$result[0])
