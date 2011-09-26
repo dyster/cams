@@ -8,7 +8,8 @@ use cams\models\Ticket;
 class NewsController extends \lithium\action\Controller {
 
 	public function index() {
-		$news = News::all(array('limit' => '4', 'order' => 'created DESC'));
+		$twomonthsago = date('Y-m-d H:i:s', time()-5184000);
+		$news = News::all(array('limit' => '4', 'order' => 'created DESC', 'conditions' => array("created > '$twomonthsago'")));
 		$usertickets = Ticket::all(array('conditions' => array('user_id' => $_SESSION['user']['id']), 'limit' => 30, 'order' => 'created DESC'));
 		return compact('news', 'usertickets');
 	}
