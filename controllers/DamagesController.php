@@ -11,8 +11,8 @@ use li3_flash_message\extensions\storage\FlashMessage;
 class DamagesController extends \lithium\action\Controller {
 
 	public function index($a = 10, $b = 10, $c = 10) {
-		$modifieddamages = Damages::find('all', array('conditions' => array('modifiedby > 0', 'active' => 1),'order' => 'modified DESC', 'limit' => $a));
-		$damages = Damages::find('all', array('order' => 'created DESC', 'limit' => $b, 'conditions' => array('active' => 1)));
+		$modifieddamages = Damages::find('all', array('conditions' => array('modifiedby > 0', 'active' => 1),'order' => 'modified DESC', 'limit' => $b));
+		$damages = Damages::find('all', array('order' => 'created DESC', 'limit' => $a, 'conditions' => array('active' => 1)));
 		$nulleddamages = Damages::find('all', array('conditions' => array('nulledby > 0'),'order' => 'nulled DESC', 'limit' => $c));
 		return compact('damages', 'modifieddamages', 'nulleddamages');
 	}
@@ -26,6 +26,28 @@ class DamagesController extends \lithium\action\Controller {
 			$news = News::all(array('conditions' => "`post` LIKE '%$q%'", 'limit' => 30));
 			return compact('damages', 'objects', 'news');
 		}
+	}
+	
+	public function browse() {
+		if(!isset($this->request->data['active'])) $this->request->data['active'] = 0;
+		if(!isset($this->request->data['inactive'])) $this->request->data['inactive'] = 0;
+		$active = $this->request->data['active'];
+		$inactive = $this->request->data['inactive'];
+		
+		$limit = 20;
+        $page = $this->request->page ?: 1;
+        $order = array('created' => 'DESC');
+		$conditions = array();
+		
+		if($inactive && !$active)
+			$conditions['active'] = 0;
+		elseif (!$inactive && $active) 
+			$conditions['active'] = 1;
+		
+        $total = Damages::count(compact('conditions'));
+        $posts = Damages::all(compact('order','limit','page', 'conditions'));
+		
+        return compact('posts', 'total', 'page', 'limit', 'active', 'inactive');
 	}
 	
 	public function add($objectID) {
