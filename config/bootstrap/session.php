@@ -36,20 +36,35 @@ Session::config(array(
 * @see lithium\security\Auth
 */
 use lithium\security\Auth;
+use lithium\security\Password;
 
 Auth::config(array('user' => 
 				array(
 					'adapter' => 'Form',
 					'model' => 'Users',
-					'fields' => array('username', 'password')
+					'fields' => array('username', 'password'),
+					'filters' => array('password' => array('lithium\util\String', 'hash')), //'validators' => array('password' => false)
+					'validators' => array('password' => function($form, $data){return $form == $data;})
 					)
 ));
-
+/*
+Auth::config(array(
+ 	'user' => array(
+ 		'adapter' => 'Form',
+ 		'filters' => array('password' => array('lithium\util\String', 'hash')),
+ 		'validators' => array(
+ 			'password' => function($form, $data) {
+ 				return Password::check($form, $data);
+ 			}
+ 		)
+ 	)
+ ));*/
 
 use lithium\action\Dispatcher;
 use lithium\action\Response;
 use cams\models\acls;
 use cams\models\acos;
+use cams\models\Stats;
 use li3_flash_message\extensions\storage\FlashMessage;
 
 Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
@@ -58,12 +73,23 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 	$controller = $ctrl->request->params["controller"];
 	$action = $ctrl->request->params["action"];
 	
+	
+	
 	$aco = acos::find('first', array('conditions' => array('controller' => $controller, 'action' => $action)));
 	if($aco == null)
 	{
 		FlashMessage::Write('Permission Denied, there is no ACO for this page', array('class' => 'fail'));
 		return function() use ($request) {return new Response(compact('request') + array('location' => '/')); 	};
 	}
+	
+	$stat = Stats::Create();
+	$stat->aco_id = $aco->id;
+	$stat->useragent = $_SERVER['HTTP_USER_AGENT'];
+	$stat->ip = ip2long($_SERVER['REMOTE_ADDR']);
+	$stat->time = date('Y-m-d H:i:s');
+	if(!empty($_SESSION['user']))
+		$stat->user_id = $_SESSION['user']['id'];
+	$stat->Save();
 	
 	if($aco->public)
 		return $ctrl;
