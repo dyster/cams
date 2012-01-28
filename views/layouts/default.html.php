@@ -60,17 +60,27 @@ function display (category) {
 		<div id="left-bar">
 			<?php
 			use cams\models\acls;
-			 if(isset($_SESSION['user']))
+			 if($authz)
 			 { ?>
 			
 			<div class="shadow">
 				<label>Skadehantering</label>
 				<ul>
 					<li><?=$this->html->link('Hem', 'news/index');?></li>
+					<li><?=$this->html->link('Bläddra', 'damages/browse');?></li>
 					<li><?=$this->html->link('Fordon', 'objects/index');?></li>
 					<li><?=$this->html->link('Skadeflöde', 'damages/index');?></li>
 					<li><?=$this->html->link('Ägare', 'owners/index');?></li>
 					<li><?=$this->html->link('Statistik', 'damages/statistics');?></li>			
+				</ul>
+			</div>
+						
+			<div class="shadow">
+				<label>Projekt</label>
+				<ul>
+					<li><?=$this->html->link('Index', 'projects/index');?></li>
+					<li><?=$this->html->link('Kioskläge', 'projects/kiosk');?></li>
+						
 				</ul>
 			</div>
 			
@@ -107,18 +117,21 @@ function display (category) {
 			
 			<?php
 			
-			if(isset($_SESSION['user']))
+			if($authz)
 			{
-				if(acls::getAllowedAction($_SESSION['user']['id'], 'users', 'index'))
+				if(acls::getAllowedAction($authz['id'], 'users', 'index'))
 					$adminmenu['Användare'][] = array('show' => 'Index', 'link' => 'users/index');
-				if(acls::getAllowedAction($_SESSION['user']['id'], 'users', 'add'))
+				if(acls::getAllowedAction($authz['id'], 'users', 'add'))
 					$adminmenu['Användare'][] = array('show' => 'Lägg till', 'link' => 'users/add');
-				if(acls::getAllowedAction($_SESSION['user']['id'], 'tickets', 'index'))
+				if(acls::getAllowedAction($authz['id'], 'tickets', 'index'))
 					$adminmenu['Tickets'][] = array('show' => 'Index', 'link' => 'tickets/index');
-				if(acls::getAllowedAction($_SESSION['user']['id'], 'objects', 'add'))
+				if(acls::getAllowedAction($authz['id'], 'objects', 'add'))
 					$adminmenu['Fordon'][] = array('show' => 'Lägg till', 'link' => 'objects/add');
-				if(acls::getAllowedAction($_SESSION['user']['id'], 'news', 'add'))
+				if(acls::getAllowedAction($authz['id'], 'news', 'add'))
 					$adminmenu['Nyheter'][] = array('show' => 'Lägg till', 'link' => 'news/add');
+				if(acls::getAllowedAction($authz['id'], 'projects', 'add'))
+					$adminmenu['Projekt'][] = array('show' => 'Lägg till', 'link' => 'projects/add');
+				
 			} ?>
 			
 			<?php 
@@ -193,6 +206,14 @@ function display (category) {
 				<li><?=$this->html->link('CentOS', 'http://www.centos.org/');?></li>
 				<li><?=$this->html->link('Lithium', 'http://lithify.me/'); ?></li> -->
 				<li><?=$this->html->link('Synpunkter/Buggar på denna sida', '/tickets/add/'.substr(str_replace('/', '::', $_SERVER['QUERY_STRING']), 4));?></li>
+				<!--
+				<li><a id="thislink" onclick="
+document.getElementById('left-bar').style.display = 'none';
+document.getElementById('footer').style.display = 'none';
+document.getElementById('thislink').style.display = 'none'; 
+document.getElementById('content').style.padding = '20px';
+">Kioskläge</a></li>
+				-->
 				<?php if(isset($_SESSION['queries'])) { ?><li><?=$tick;?> databasförfrågningar på <?=$sum?> sekunder</li><?php } ?>
 			</ul>
 	</div>
