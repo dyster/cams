@@ -5,6 +5,7 @@ namespace cams\models;
 class News extends \lithium\data\Model {
 
 	public $validates = array();
+	//public $_meta = array('connection' => 'mongo');
 	
 	public function getCreatedBy($record)
 		{
