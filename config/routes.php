@@ -86,4 +86,5 @@ if (!Environment::is('production')) {
  */
 Router::connect('/{:controller}/{:action}/page:{:page:[0-9]+}');
 Router::connect('/{:controller}/{:action}/{:args}');
+
 ?>
