@@ -1,0 +1,13 @@
+#!/bin/bash
+if [ ! -n "$1" ]
+then
+  echo "Usage: `basename $0` Classname"
+  exit
+fi  
+
+/var/www/libraries/lithium/console/li3 create $1
+/var/www/libraries/lithium/console/li3 create --template=indexview view $1 index
+/var/www/libraries/lithium/console/li3 create --template=addview view $1 add
+/var/www/libraries/lithium/console/li3 create --template=editview view $1 edit
+/var/www/libraries/lithium/console/li3 create --template=viewview view $1 view
+
