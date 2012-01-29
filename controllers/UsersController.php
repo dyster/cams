@@ -28,6 +28,7 @@ class UsersController extends \lithium\action\Controller {
     }
 	
 	public function login() {
+		
 		if(!empty($this->request->data))
 		{
 			if(Auth::check('user', $this->request))

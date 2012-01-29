@@ -20,7 +20,7 @@ class UsershiftsController extends \lithium\action\Controller {
 	public function add() {
 		$usershift = Usershifts::create();
 
-		if (($this->request->data) && $userShift->save($this->request->data)) {
+		if (($this->request->data) && $usershift->save($this->request->data)) {
 			return $this->redirect(array('Usershifts::view', 'args' => array($usershift->id)));
 		}
 		return compact('usershift');
@@ -32,8 +32,8 @@ class UsershiftsController extends \lithium\action\Controller {
 		if (!$usershift) {
 			return $this->redirect('Usershifts::index');
 		}
-		if (($this->request->data) && $userShift->save($this->request->data)) {
-			return $this->redirect(array('UserShifts::view', 'args' => array($id)));
+		if (($this->request->data) && $usershift->save($this->request->data)) {
+			return $this->redirect(array('Usershifts::view', 'args' => array($usershift->id)));
 		}
 		return compact('usershift');
 	}
