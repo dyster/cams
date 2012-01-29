@@ -1,11 +1,10 @@
 <?php
-$object = $usershift;
-$model = $object->model();
+$model = $usershift->model();
 $schema = $model::schema();
 ?>
 
 
-<?=$this->form->create($object); ?>
+<?=$this->form->create($usershift); ?>
 
 <?php foreach($schema as $field => $info) 
 {
