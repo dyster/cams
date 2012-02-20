@@ -62,7 +62,11 @@ function display (category) {
 			use cams\models\acls;
 			 if($authz)
 			 { ?>
-			
+
+			 <div class="shadow">
+				 <form id="searchbox" action="/damages/search" method="post"><input type="text" name="q" id="q" /><input type="submit" value=">" /></form>
+			 </div>
+
 			<div class="shadow">
 				<label>Skadehantering</label>
 				<ul>
@@ -74,6 +78,23 @@ function display (category) {
 					<li><?=$this->html->link('Statistik', 'damages/statistics');?></li>			
 				</ul>
 			</div>
+
+			<?php if(isset($controllerMenu)) { ?>
+				 <div class="shadow">
+					 <label><?=$controllerMenu['title'];?></label>
+					 <ul>
+						 <?php
+						 $i = 0;
+						 foreach($controllerMenu['objects'] as $key => $val) {
+							 echo "\n<li><a href=\"javascript:display('submenu$i')\">".$key."</a>\n\t<ul class=\"".$val['class']."\" id=\"submenu$i\">";
+							 foreach($val['items'] as $item)
+								 echo "\n\t\t".'<li><a href="'.$item['link'].'">'.$item['name']."</a></li>";
+							 echo "</ul></li>";
+							 $i++;
+						 } ?>
+					 </ul>
+				 </div>
+			<?php } ?>
 						
 			<div class="shadow">
 				<label>Projekt</label>
@@ -83,38 +104,9 @@ function display (category) {
 						
 				</ul>
 			</div>
-			
-			<div class="shadow">
-				<form id="searchbox" action="/damages/search" method="post"><input type="text" name="q" id="q" /><input type="submit" value=">" /></form>		
-			</div>
+
 			<?php } ?>
-			
-			
-			<?php
-			
-			if(isset($controllerMenu))
-			{ ?>
-			<div class="shadow">
-				<label><?=$controllerMenu['title'];?></label>
-				<ul>
-					<?php
-					$i = 0;
-					foreach($controllerMenu['objects'] as $key => $val)
-					{
-						echo "\n<li><a href=\"javascript:display('submenu$i')\">".$key."</a>\n\t<ul class=\"".$val['class']."\" id=\"submenu$i\">";
-						foreach($val['items'] as $item)
-							echo "\n\t\t".'<li><a href="'.$item['link'].'">'.$item['name']."</a></li>";
-						echo "</ul></li>";
-						$i++;
-					}
-					?>
-					
-				</ul>
-			</div>	
-			<?php } ?>
-			
-			
-			
+
 			<?php
 			
 			if($authz)
