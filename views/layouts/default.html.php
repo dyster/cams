@@ -11,7 +11,7 @@
 <head>
 	<?php echo $this->html->charset();?>
 	<title>CAMS<?php echo $this->title(); ?></title>
-	<?php echo $this->html->style(array('styles', 'base', 'lithium')); ?>
+	<?php echo $this->html->style(array('base', 'lithium', 'styles')); ?>
 	<?php echo $this->html->style('print', array('media' => 'print')); ?>
 	<?php echo $this->html->style('handheld', array('media' => 'handheld')); ?>
 	<?php echo $this->scripts(); ?>
@@ -192,7 +192,7 @@ function display (category) {
 			?>
 			<div id="spacer"></div>
 			<div id="footer">
-				<hr />
+
 			<ul>
 				<!--<li>Powered by <?=$this->html->link('Apache', 'http://httpd.apache.org/');?></li>
 				<li><?=$this->html->link('CentOS', 'http://www.centos.org/');?></li>

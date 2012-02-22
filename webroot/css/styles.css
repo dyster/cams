@@ -107,6 +107,10 @@ tfoot a{
 
 #footer {
 	background-color: #FFFFFF;
+    border-top: solid 2px #e6e6e6;
+    width: 1000px;
+    font-size: 10px;
+    padding: 0;
 }
 
 #userbox a {
@@ -118,3 +122,14 @@ form label {
 	font-weight: bolder;
 }
 
+.login {
+    width: 160px;
+    font-size: 10px;
+
+}
+
+.login input {
+    margin-left: auto;
+    margin-right: auto;
+    font-size: 10px;
+}

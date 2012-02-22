@@ -226,8 +226,9 @@ input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus
 hr {
 	border: none;
 	height: 0;
-	border-bottom: 1px solid #e6e6e6;
-	margin:1em 0;
+	border-bottom: 3px solid #e6e6e6;
+	margin:2em 0;
+    width: 1000px;
 }
 sup, sub {
 	color: #666;
@@ -277,7 +278,7 @@ code {
 }
 table, form, pre > code {
 	margin-top: 0px;
-	margin-bottom: 12px;
+	margin-bottom: 20px;
 }
 table, form, pre > code, .shadow {
 	-moz-box-shadow: 2px 2px 12px rgba(0,0,0,.15);
