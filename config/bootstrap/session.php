@@ -38,7 +38,7 @@ Session::config(array(
 use lithium\security\Auth;
 use lithium\security\Password;
 
-Auth::config(array('user' => 
+Auth::config(array('user' =>
 				array(
 					'adapter' => 'Form',
 					'model' => 'Users',
@@ -69,19 +69,19 @@ use li3_flash_message\extensions\storage\FlashMessage;
 
 Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
     $ctrl = $chain->next($self, $params, $chain);
-	
+
 	$controller = $ctrl->request->params["controller"];
 	$action = $ctrl->request->params["action"];
-	
-	
-	
+
+
+
 	$aco = acos::find('first', array('conditions' => array('controller' => $controller, 'action' => $action)));
 	if($aco == null)
 	{
 		FlashMessage::Write('Permission Denied, there is no ACO for this page', array('class' => 'fail'));
 		return function() use ($request) {return new Response(compact('request') + array('location' => '/')); 	};
 	}
-	
+
 	$stat = Stats::Create();
 	$stat->aco_id = $aco->id;
 	$stat->useragent = $_SERVER['HTTP_USER_AGENT'];
@@ -90,29 +90,28 @@ Dispatcher::applyFilter('_callable', function($self, $params, $chain) {
 	if(!empty($_SESSION['user']))
 		$stat->user_id = $_SESSION['user']['id'];
 	$stat->Save();
-	
+
 	if($aco->public)
 		return $ctrl;
-		
+
 	$auth = Auth::check('user');
     if (!$auth) {
-    	FlashMessage::Write('You are not logged in', array('class' => 'fail'));
-		return function() use ($request) {return new Response(compact('request') + array('location' => '/login')); 	};
+	return function() use ($request) {return new Response(compact('request') + array('location' => '/login')); 	};
     }
-	
+
 	if($aco->default)
 		return $ctrl;
-    
+
 	$acl = acls::find('first', array('conditions' => array('user_id' => $auth["id"] , 'aco_id' => $aco->id)));
-	
+
 	if($acl == null)
 	{
 		FlashMessage::Write('Permission Denied', array('class' => 'fail'));
 		return function() use ($request) {return new Response(compact('request') + array('location' => '/')); 	};
 	}
-		
+
 	return $ctrl;
-    
+
 });
 
 ?>

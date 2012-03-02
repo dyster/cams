@@ -26,9 +26,9 @@ class UsersController extends \lithium\action\Controller {
         }
         return compact('user', 'owners');
     }
-	
+
 	public function login() {
-		
+
 		if(!empty($this->request->data))
 		{
 			if(Auth::check('user', $this->request))
@@ -38,22 +38,21 @@ class UsersController extends \lithium\action\Controller {
 				$_SESSION['notifications'][] = array('text' => 'Din senaste inloggning var '.$user->lastlogin, 'class' => 'notice');
 				$user->lastlogin = date('Y-m-d H:i:s');
 				$user->save();
-				
-				FlashMessage::Write('Du är nu inloggad', array('class' => 'success'));
-            	return $this->redirect('/news/index');
+
+            			return $this->redirect('/news/index');
 			}
 			else
 				FlashMessage::Write('Fel användarnamn eller lösenord', array('class' => 'fail'));
-						
+
         }
 		elseif (Auth::check('user'))
 		{
 			//return $this->redirect('users/profile');
-			 
-		}			
-			
+
+		}
+
 	}
-	
+
 	public function logout(){
 				//$user = Users::first($_SESSION['user']['id']);
 				//$user->lastlogin = date('Y-m-d H:i:s');
@@ -61,7 +60,7 @@ class UsersController extends \lithium\action\Controller {
                 Auth::clear('user');
                 return $this->redirect('/users/login');
         }
-	
+
 	public function edit($userID){
 		$acos = acos::all(array('conditions' => array('public' => '0', 'default' => '0'), 'order' => 'controller'));
 		$publicacos = acos::all(array('conditions' => array('public' => '1'), 'order' => 'controller'));
@@ -70,16 +69,16 @@ class UsersController extends \lithium\action\Controller {
 		$user = Users::find($userID);
 		foreach(Owners::all() as $owner)
 			$owners[$owner->id] = $owner->short;
-		
+
 		if($this->request->data && $user->save($this->request->data))
 		{
 			FlashMessage::Write('Användare ändrad', array('class' => 'success'));
 		}
-		
-		
+
+
 		return compact('acos', 'allowed', 'user', 'defaultacos', 'publicacos', 'owners');
 	}
-	
+
 	public function flip($acoID, $userID){
 		$acl = acls::find('first', array('conditions' => array('user_id' => $userID, 'aco_id' => $acoID)));
 
@@ -96,7 +95,7 @@ class UsersController extends \lithium\action\Controller {
 		}
 		return $this->redirect("users/edit/{$userID}");
 	}
-	
+
 	public function profile()
 	{
 		$auth = Auth::check('user');
@@ -117,7 +116,7 @@ class UsersController extends \lithium\action\Controller {
 						}
 						else
 							$_SESSION['notifications'][] = array('class' => 'fail', 'text' => 'Dom nya lösenorden matchar inte');
-					}	
+					}
 					else
 						$_SESSION['notifications'][] = array('class' => 'fail', 'text' => 'Fel lösenord');
 				}
@@ -126,18 +125,18 @@ class UsersController extends \lithium\action\Controller {
 					FlashMessage::Write('Användaruppgifter ändrade', array('class' => 'success'));
 				}
 			}
-						
+
 			return compact('user');
 		}
 		else
 			return $this->redirect('Users::login');
 	}
-	
-	
+
+
 	public function password($userID)
 	{
 		$user = Users::find($userID);
-		
+
 		if($this->request->data)
 		{
 			$user->password = \lithium\util\String::hash($this->request->data['password']);
@@ -147,24 +146,24 @@ class UsersController extends \lithium\action\Controller {
 				return $this->redirect('users/index');
 			}
 		}
-		
+
 		return compact('user');
 	}
-	
+
 	/*
 	public function _init(array $options = array())
 	{
-		
+
 		$controllerMenu['title'] = "Användare";
 		$controllerMenu['objects']['Sidor']['class'] = 'show';
 		$controllerMenu['objects']['Sidor']['items'][] = array('name' => 'Index', 'link' => '/users/index/');
 		$controllerMenu['objects']['Sidor']['items'][] = array('name' => 'Add', 'link' => '/users/add/');
-				
+
 		$this->set(compact('controllerMenu'));
-		
+
 		parent::_init();
 	}*/
-		
+
 }
 
 
