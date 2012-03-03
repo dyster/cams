@@ -6,6 +6,7 @@ use cams\models\Types;
 use cams\models\Owners;
 use cams\models\Damages;
 use li3_flash_message\extensions\storage\FlashMessage;
+use lithium\Storage\Session;
 
 class ObjectsController extends \lithium\action\Controller {
 
@@ -111,19 +112,19 @@ class ObjectsController extends \lithium\action\Controller {
 		
 		return compact('object');
 	}
-		
-	public function _init()
-	{
-		$selObj = 0;
-		if(isset($this->request->params['args'][0]))
-			$selObj = $this->request->params['args'][0];
-		
+
+	public function menu() {
+		if($this->request->is('ajax'))
+			$this->_render['layout'] = false;
+
+		$selObj = Session::read('objectID');
+
 		$objects = Objects::all(array('conditions' => array('active' => 1)));
 		$controllerMenu['title'] = "Fordon";
 		$controllerMenu['objects'] = array();
 		foreach($objects as $object)
 		{
-			
+
 			$type = $object->getType();
 			$controllerMenu['objects'][$type->name]['class'] = 'hide';
 			if($object->id == $selObj)
@@ -131,18 +132,23 @@ class ObjectsController extends \lithium\action\Controller {
 			else
 				$controllerMenu['objects'][$type->name]['items'][] = array('name' => $object->name, 'link' => '/objects/view/'.$object->id);
 		}
-		
+
 		// if a object is selected, get this and expand the type
 		if($selObj > 0)
 		{
 			$showtype = Objects::first($selObj)->getType()->name;
 			$controllerMenu['objects'][$showtype]['class'] = 'show';
 		}
-		
+
 		$this->set(compact('controllerMenu'));
-		
-		parent::_init();
 	}
+
+	public function _init() {
+		parent::_init();
+		if(isset($this->request->params['args'][0]))
+			Session::write('objectID', $this->request->params['args'][0]);
+	}
+
 }
 
 ?>

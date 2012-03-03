@@ -57,10 +57,10 @@ tfoot a{
 #left-bar {
 	position: absolute;
 	width: 250px;
-	z-index: 1000;
+	z-index: 10;
 }
 
-#left-bar div {
+.menudiv {
 	background: #fafafa; 
 	border: 1px solid #e6e6e6;
 	margin: 20px 5px 20px 10px;
@@ -132,4 +132,30 @@ form label {
     margin-left: auto;
     margin-right: auto;
     font-size: 11px;
+}
+
+#grayness {
+	opacity:0.6;
+  	filter:alpha(opacity=60);
+	position: absolute;
+	
+	background-color: darkgray;
+	
+	top: 0px;
+	left: 0px;
+	right: 0px;
+	bottom: 0px;
+	z-index: 20;
+}
+
+#popup {
+	position: absolute;
+	top: 20%;
+	left: 20%;
+	padding: 0;
+	z-index: 40;
+}
+
+#popup form {
+	margin: 0;
 }

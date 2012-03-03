@@ -14,19 +14,22 @@ class ProjectsController extends \lithium\action\Controller {
 		$projects = Projects::all(array('order' => array('id' => 'DESC')));
 		return compact('projects');
 	}
-	
+
 	public function kiosk() {
 		$projects = Projects::all(array('order' => array('id' => 'DESC')));
 		$this->set(compact('projects'));
 		return $this->render(array('layout' => 'kiosk'));
 	}
-	
+
 	public function view($id) {
 		$project = Projects::first($id, array('with' => array('Owners', 'Objects', 'Users')));
 		return compact('project');
 	}
 
 	public function add() {
+		if( $this->request->is('ajax') ) {
+			$this->_render['layout'] = false;
+		}
 		$project = Projects::create($this->request->data);
 		//$objects = Objects::all();
 		//$owners = Owners::all();
@@ -41,7 +44,7 @@ class ProjectsController extends \lithium\action\Controller {
 			{
 				return $this->redirect(array('Projects::index'));
 			}
-				
+
 		}
 		end:
 		return compact('project', 'objects', 'owners');
@@ -49,8 +52,6 @@ class ProjectsController extends \lithium\action\Controller {
 
 	public function edit($id) {
 		$project = Projects::find($id);
-
-		
 		if (($this->request->data) && $project->save($this->request->data)) {
 			return $this->redirect(array('Projects::index'));
 		}
@@ -58,7 +59,6 @@ class ProjectsController extends \lithium\action\Controller {
 	}
 
 	public function delete($id) {
-		
 		Projects::find($id)->delete();
 		return $this->redirect('Projects::index');
 	}

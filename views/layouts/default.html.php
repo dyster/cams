@@ -30,24 +30,49 @@ function display (category) {
 -->
 </script>
 
+<script language="JavaScript" type="text/javascript">
+
+	var receiveReq = new XMLHttpRequest();
+	function fetch(id, url) {
+		if (receiveReq.readyState == 4 || receiveReq.readyState == 0) {
+			document.getElementById(id).innerHTML = 'Laddar, var god dröj';
+			receiveReq.open("GET", 'http://cams.coresys.se/' + url, true);
+			receiveReq.setRequestHeader( 'X_REQUESTED_WITH' , 'XMLHttpRequest' );
+			receiveReq.onreadystatechange = function() {
+				if (receiveReq.readyState == 4) {
+					document.getElementById(id).innerHTML = receiveReq.responseText;
+				}
+			};
+			receiveReq.send(null);
+		}
+	}
+
+	function handleFetch() {
+		if (receiveReq.readyState == 4) {
+			document.getElementById('popup').innerHTML = receiveReq.responseText;
+		}
+	}
+</script>
+
+
 </head>
 <body class="app">
 	<div id="userbox">
 		<?php
-			
+
 			use lithium\security\Auth;
-			
+
 			$authz = Auth::check('user');
 			if(!$authz)
 				echo $this->html->link("Logga In", '/login');
 			else
 				echo $this->html->link($_SESSION['user']['fullname'], '/users/profile')  . " | " . $this->html->link("Logga Ut", '/logout');
-			
+
 			?>
 			<br />
 			<img src="http://coresys.se/images/system.png" alt="logo" style="float: right;" />
 	</div>
-	
+
 		<div id="header">
 			<?=$this->html->image('ownerlogos/1.jpg', array('width' => '717', 'height' => '74'));?>
 		</div>
@@ -63,11 +88,11 @@ function display (category) {
 			 if($authz)
 			 { ?>
 
-			 <div class="shadow">
+			 <div class="shadow menudiv">
 				 <form id="searchbox" action="/damages/search" method="post"><input type="text" name="q" id="q" /><input type="submit" value=">" /></form>
 			 </div>
 
-			<div class="shadow">
+			<div class="shadow menudiv">
 				<label>Skadehantering</label>
 				<ul>
 					<li><?=$this->html->link('Hem', 'news/index');?></li>
@@ -75,12 +100,12 @@ function display (category) {
 					<li><?=$this->html->link('Fordon', 'objects/index');?></li>
 					<li><?=$this->html->link('Skadeflöde', 'damages/index');?></li>
 					<li><?=$this->html->link('Ägare', 'owners/index');?></li>
-					<li><?=$this->html->link('Statistik', 'damages/statistics');?></li>			
+					<li><?=$this->html->link('Statistik', 'damages/statistics');?></li>
 				</ul>
 			</div>
 
 			<?php if(isset($controllerMenu)) { ?>
-				 <div class="shadow">
+				 <div class="shadow menudiv">
 					 <label><?=$controllerMenu['title'];?></label>
 					 <ul>
 						 <?php
@@ -95,20 +120,27 @@ function display (category) {
 					 </ul>
 				 </div>
 			<?php } ?>
-						
-			<div class="shadow">
+
+
+			<div class="shadow menudiv" onclick="">
+				<a href="javascript:fetch('fordonmenu', 'objects/menu');" onclick="document.getElementById('fordonmenu').style.display = 'block';"><label>Fordon</label><label style="float: right;">+</label></a>
+				<div id="fordonmenu" style="display: none;">
+
+				</div>
+			</div>
+
+			<div class="shadow menudiv">
 				<label>Projekt</label>
 				<ul>
 					<li><?=$this->html->link('Index', 'projects/index');?></li>
 					<li><?=$this->html->link('Kioskläge', 'projects/kiosk');?></li>
-						
 				</ul>
 			</div>
 
 			<?php } ?>
 
 			<?php
-			
+
 			if($authz)
 			{
 				if(acls::getAllowedAction($authz['id'], 'users', 'index'))
@@ -123,13 +155,13 @@ function display (category) {
 					$adminmenu['Nyheter'][] = array('show' => 'Lägg till', 'link' => 'news/add');
 				if(acls::getAllowedAction($authz['id'], 'projects', 'add'))
 					$adminmenu['Projekt'][] = array('show' => 'Lägg till', 'link' => 'projects/add');
-				
+
 			} ?>
-			
-			<?php 
+
+			<?php
 			if(isset($adminmenu))
 			{
-				echo '<div class="shadow"><label>Admin</label><ul>';
+				echo '<div class="shadow menudiv"><label>Admin</label><ul>';
 				foreach($adminmenu as $key => $val)
 				{
 					echo '<li><span style="color: #00a8e6 ;">'.$key.'</span>';
@@ -141,34 +173,29 @@ function display (category) {
 				}
 				echo '</ul></div>';
 			}
-								
+
 			 ?>
-									
-			
-			
-			
-			
 		</div>
+
 		<div id="content">
-			
-			<?php
-						
+	    <?php
+
 			$flash = $this->flashMessage->output();
 			if(!empty($flash))
 				echo $flash;
-				
+
 			if(isset($_SESSION['notifications']))
 			{ foreach($_SESSION['notifications'] as $note) { ?>
 				<div class="noticebox <?=$note['class'];?>"><?=$note['text'];?></div>
-			<?php 
+			<?php
 				}
 				$_SESSION['notifications'] = null;
 				}?>
-			
-			
+
+
 			<?php echo $this->content(); ?>
 			<?php
-				
+
 				if(isset($_SESSION['queries']))
 				{
 					$qprint = "<ul>\n";
@@ -181,12 +208,12 @@ function display (category) {
 						$tick++;
 					}
 					$qprint .= "<li></li><li>Summary: $tick queries in $sum seconds</li>\n</ul>";
-															
+
 					$_SESSION['queries'] = null;
-						
+
 					if(isset($_SESSION['user']) && $_SESSION['user']['id'] == 19)
 					{
-						echo $qprint;					
+						echo $qprint;
 					}
 				}
 			?>
@@ -198,11 +225,13 @@ function display (category) {
 				<li><?=$this->html->link('CentOS', 'http://www.centos.org/');?></li>
 				<li><?=$this->html->link('Lithium', 'http://lithify.me/'); ?></li> -->
 				<li><?=$this->html->link('Synpunkter/Buggar på denna sida', '/tickets/add/'.substr(str_replace('/', '::', $_SERVER['QUERY_STRING']), 4));?></li>
+				<li><a href="javascript:fetch('popup', 'projects/add');" id="hmm" onclick="document.getElementById('popup').style.display = 'block';
+document.getElementById('grayness').style.display = 'block';">Popup</a></li>
 				<!--
 				<li><a id="thislink" onclick="
 document.getElementById('left-bar').style.display = 'none';
 document.getElementById('footer').style.display = 'none';
-document.getElementById('thislink').style.display = 'none'; 
+document.getElementById('thislink').style.display = 'none';
 document.getElementById('content').style.padding = '20px';
 ">Kioskläge</a></li>
 				-->
@@ -210,11 +239,8 @@ document.getElementById('content').style.padding = '20px';
 			</ul>
 	</div>
 		</div>
-		
-		
-	
-	
-	
-	
+<div id="grayness" style="display: none;"></div>
+<div id="popup" style="display: none;"></div>
+
 </body>
 </html>
