@@ -60,6 +60,9 @@ class ObjectsController extends \lithium\action\Controller {
 	}
 	
 	public function add() {
+		if($this->request->is('ajax'))
+			$this->_render['layout'] = false;
+
 		$object = Objects::create();
 		
 		foreach(Owners::all() as $owner)

@@ -18,6 +18,9 @@ class UsersController extends \lithium\action\Controller {
     }
 
     public function add() {
+		if($this->request->is('ajax'))
+			$this->_render['layout'] = false;
+
         $user = Users::create($this->request->data);
 		foreach(Owners::all() as $owner)
 			$owners[$owner->id] = $owner->short;

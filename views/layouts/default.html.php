@@ -35,7 +35,7 @@ function display (category) {
 	var receiveReq = new XMLHttpRequest();
 	function fetch(id, url) {
 		if (receiveReq.readyState == 4 || receiveReq.readyState == 0) {
-			document.getElementById(id).innerHTML = 'Laddar, var god dröj';
+			document.getElementById(id).innerHTML = '<div style="background-color: #FFFFFF;" class="shadow">Laddar, var god dröj</div>';
 			receiveReq.open("GET", 'http://cams.coresys.se/' + url, true);
 			receiveReq.setRequestHeader( 'X_REQUESTED_WITH' , 'XMLHttpRequest' );
 			receiveReq.onreadystatechange = function() {
@@ -52,6 +52,18 @@ function display (category) {
 			document.getElementById('popup').innerHTML = receiveReq.responseText;
 		}
 	}
+
+	window.onload = function() {
+		var tags = document.getElementsByClassName('popuplink');
+		for (var i in tags) {
+			tags[i].onclick = function() {
+				document.getElementById('popupouter').style.display = 'block';
+				document.getElementById('grayness').style.display = 'block';
+			}
+		}
+
+		document.getElementById('date').onchange = validateDate;
+	};
 </script>
 
 
@@ -144,18 +156,17 @@ function display (category) {
 			if($authz)
 			{
 				if(acls::getAllowedAction($authz['id'], 'users', 'index'))
-					$adminmenu['Användare'][] = array('show' => 'Index', 'link' => 'users/index');
+					$adminmenu['Användare'][] = array('show' => 'Index', 'link' => 'users/index', 'popup' => 0);
 				if(acls::getAllowedAction($authz['id'], 'users', 'add'))
-					$adminmenu['Användare'][] = array('show' => 'Lägg till', 'link' => 'users/add');
+					$adminmenu['Användare'][] = array('show' => 'Lägg till', 'link' => 'users/add', 'popup' => 1);
 				if(acls::getAllowedAction($authz['id'], 'tickets', 'index'))
-					$adminmenu['Tickets'][] = array('show' => 'Index', 'link' => 'tickets/index');
+					$adminmenu['Tickets'][] = array('show' => 'Index', 'link' => 'tickets/index', 'popup' => 0);
 				if(acls::getAllowedAction($authz['id'], 'objects', 'add'))
-					$adminmenu['Fordon'][] = array('show' => 'Lägg till', 'link' => 'objects/add');
+					$adminmenu['Fordon'][] = array('show' => 'Lägg till', 'link' => 'objects/add', 'popup' => 1);
 				if(acls::getAllowedAction($authz['id'], 'news', 'add'))
-					$adminmenu['Nyheter'][] = array('show' => 'Lägg till', 'link' => 'news/add');
+					$adminmenu['Nyheter'][] = array('show' => 'Lägg till', 'link' => 'news/add', 'popup' => 1);
 				if(acls::getAllowedAction($authz['id'], 'projects', 'add'))
-					$adminmenu['Projekt'][] = array('show' => 'Lägg till', 'link' => 'projects/add');
-
+					$adminmenu['Projekt'][] = array('show' => 'Lägg till', 'link' => 'projects/add', 'popup' => 1);
 			} ?>
 
 			<?php
@@ -166,8 +177,15 @@ function display (category) {
 				{
 					echo '<li><span style="color: #00a8e6 ;">'.$key.'</span>';
 						echo '<ul class="show">';
-						foreach($val as $v)
-							echo '<li>' . $this->html->link($v['show'], $v['link']) . '</li>';
+						foreach($val as $v) {
+							echo '<li>';
+							if($v['popup'])
+								echo "<a href=\"javascript:fetch('popup', '".$v['link']."');\" class=\"popuplink\">".$v['show'].'</a>';
+							else
+								echo $this->html->link($v['show'], $v['link']);
+							echo '</li>';
+						}
+
 						echo '</ul>';
 					echo '</li>';
 				}
@@ -192,8 +210,8 @@ function display (category) {
 				$_SESSION['notifications'] = null;
 				}?>
 
-
 			<?php echo $this->content(); ?>
+
 			<?php
 
 				if(isset($_SESSION['queries']))
@@ -219,28 +237,30 @@ function display (category) {
 			?>
 			<div id="spacer"></div>
 			<div id="footer">
+				<ul>
+					<!--<li>Powered by <?=$this->html->link('Apache', 'http://httpd.apache.org/');?></li>
+					<li><?=$this->html->link('CentOS', 'http://www.centos.org/');?></li>
+					<li><?=$this->html->link('Lithium', 'http://lithify.me/'); ?></li> -->
+					<li><?=$this->html->link('Synpunkter/Buggar på denna sida', '/tickets/add/'.substr(str_replace('/', '::', $_SERVER['QUERY_STRING']), 4));?></li>
 
-			<ul>
-				<!--<li>Powered by <?=$this->html->link('Apache', 'http://httpd.apache.org/');?></li>
-				<li><?=$this->html->link('CentOS', 'http://www.centos.org/');?></li>
-				<li><?=$this->html->link('Lithium', 'http://lithify.me/'); ?></li> -->
-				<li><?=$this->html->link('Synpunkter/Buggar på denna sida', '/tickets/add/'.substr(str_replace('/', '::', $_SERVER['QUERY_STRING']), 4));?></li>
-				<li><a href="javascript:fetch('popup', 'projects/add');" id="hmm" onclick="document.getElementById('popup').style.display = 'block';
-document.getElementById('grayness').style.display = 'block';">Popup</a></li>
-				<!--
-				<li><a id="thislink" onclick="
-document.getElementById('left-bar').style.display = 'none';
-document.getElementById('footer').style.display = 'none';
-document.getElementById('thislink').style.display = 'none';
-document.getElementById('content').style.padding = '20px';
-">Kioskläge</a></li>
-				-->
-				<?php if(isset($_SESSION['queries'])) { ?><li><?=$tick;?> databasförfrågningar på <?=$sum?> sekunder</li><?php } ?>
-			</ul>
-	</div>
+					<!--<li><a id="thislink" onclick="
+						document.getElementById('left-bar').style.display = 'none';
+						document.getElementById('footer').style.display = 'none';
+						document.getElementById('thislink').style.display = 'none';
+						document.getElementById('content').style.padding = '20px';
+						">Kioskläge</a></li>-->
+					<?php if(isset($_SESSION['queries'])) { ?><li><?=$tick;?> databasförfrågningar på <?=$sum?> sekunder</li><?php } ?>
+				</ul>
+			</div>
 		</div>
 <div id="grayness" style="display: none;"></div>
-<div id="popup" style="display: none;"></div>
+<div id="popupouter" style="display: none;">
+	<div style="text-align: right; width: 100%;">
+		<button onclick="document.getElementById('popupouter').style.display = 'none';
+				document.getElementById('grayness').style.display = 'none';"><strong>X</strong></button>
+	</div>
+	<div id="popup"></div>
+</div>
 
 </body>
 </html>

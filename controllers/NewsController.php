@@ -20,6 +20,9 @@ class NewsController extends \lithium\action\Controller {
 	}
 
 	public function add() {
+		if($this->request->is('ajax'))
+			$this->_render['layout'] = false;
+
 		$news = News::create();
 		
 		if (($this->request->data) && $news->save($this->request->data)) {

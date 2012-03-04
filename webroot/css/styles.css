@@ -107,10 +107,10 @@ tfoot a{
 
 #footer {
 	background-color: #FFFFFF;
-    border-top: solid 2px #e6e6e6;
-    width: 1000px;
-    font-size: 10px;
-    padding: 0;
+	border-top: solid 2px #e6e6e6;
+	width: 1000px;
+	font-size: 10px;
+	padding: 0;
 }
 
 #userbox a {
@@ -123,8 +123,8 @@ form label {
 }
 
 .login {
-    width: 180px;
-    font-size: 11px;
+	width: 180px;
+	font-size: 11px;
 
 }
 
@@ -137,25 +137,23 @@ form label {
 #grayness {
 	opacity:0.6;
   	filter:alpha(opacity=60);
-	position: absolute;
-	
+	position: fixed;
 	background-color: darkgray;
-	
-	top: 0px;
-	left: 0px;
-	right: 0px;
-	bottom: 0px;
+	top: 0;
+	bottom: 0;
+	left: 0;
+	right: 0;
 	z-index: 20;
 }
 
-#popup {
+#popupouter {
 	position: absolute;
 	top: 20%;
 	left: 20%;
-	padding: 0;
+	padding: 5px;
 	z-index: 40;
 }
 
 #popup form {
-	margin: 0;
+	margin: 5px;
 }
