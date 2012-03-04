@@ -120,8 +120,6 @@ class ObjectsController extends \lithium\action\Controller {
 		if($this->request->is('ajax'))
 			$this->_render['layout'] = false;
 
-		$micro = microtime(true);
-
 		$types = Types::all(array('with' => array('Objects')));
 
 		$selObj = Session::read('objectID');
@@ -139,8 +137,6 @@ class ObjectsController extends \lithium\action\Controller {
 					$controllerMenu['objects'][$type->name]['items'][] = array('name' => $object->name, 'link' => '/objects/view/'.$object->id);
 			}
 		}
-		$micro = microtime(true) - $micro;
-		$controllerMenu['objects'][ceil($micro * 1000) . ' ms']['class'] = 'hide';
 		$this->set(compact('controllerMenu'));
 	}
 
