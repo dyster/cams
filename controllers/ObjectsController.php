@@ -120,29 +120,27 @@ class ObjectsController extends \lithium\action\Controller {
 		if($this->request->is('ajax'))
 			$this->_render['layout'] = false;
 
+		$micro = microtime(true);
+
+		$types = Types::all(array('with' => array('Objects')));
+
 		$selObj = Session::read('objectID');
 
-		$objects = Objects::all(array('conditions' => array('active' => 1)));
 		$controllerMenu['title'] = "Fordon";
 		$controllerMenu['objects'] = array();
-		foreach($objects as $object)
-		{
-
-			$type = $object->getType();
+		foreach($types as $type) {
 			$controllerMenu['objects'][$type->name]['class'] = 'hide';
-			if($object->id == $selObj)
-				$controllerMenu['objects'][$type->name]['items'][] = array('name' => '<strong>'.$object->name.'</strong>', 'link' => '/objects/view/'.$object->id);
-			else
-				$controllerMenu['objects'][$type->name]['items'][] = array('name' => $object->name, 'link' => '/objects/view/'.$object->id);
+			foreach($type->objects as $object) {
+				if($object->id == $selObj) {
+					$controllerMenu['objects'][$type->name]['items'][] = array('name' => '<strong>'.$object->name.'</strong>', 'link' => '/objects/view/'.$object->id);
+					$controllerMenu['objects'][$type->name]['class'] = 'show';
+				}
+				else
+					$controllerMenu['objects'][$type->name]['items'][] = array('name' => $object->name, 'link' => '/objects/view/'.$object->id);
+			}
 		}
-
-		// if a object is selected, get this and expand the type
-		if($selObj > 0)
-		{
-			$showtype = Objects::first($selObj)->getType()->name;
-			$controllerMenu['objects'][$showtype]['class'] = 'show';
-		}
-
+		$micro = microtime(true) - $micro;
+		$controllerMenu['objects'][ceil($micro * 1000) . ' ms']['class'] = 'hide';
 		$this->set(compact('controllerMenu'));
 	}
 
