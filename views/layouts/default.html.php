@@ -16,7 +16,8 @@
 	<?php echo $this->html->style('handheld', array('media' => 'handheld')); ?>
 	<?php echo $this->scripts(); ?>
 	<?php echo $this->html->link('Icon', null, array('type' => 'icon')); ?>
-
+	<meta http-equiv="X-UA-Compatible" content="chrome=1">
+	<script src="/js/modernizr.js"></script>
 <script type="text/Javascript">
 <!--
 function display (category) {
@@ -35,7 +36,7 @@ function display (category) {
 	var receiveReq = new XMLHttpRequest();
 	function fetch(id, url) {
 		if (receiveReq.readyState == 4 || receiveReq.readyState == 0) {
-			document.getElementById(id).innerHTML = '<div style="background-color: #FFFFFF;" class="shadow">Laddar, var god dröj</div>';
+			document.getElementById(id).innerHTML = '<embed src="<?=$this->path('img/spinner.svg');?>" />'; // '<div style="background-color: #FFFFFF;" class="shadow">Laddar, var god dröj</div>';
 			receiveReq.open("GET", 'http://cams.coresys.se/' + url, true);
 			receiveReq.setRequestHeader( 'X_REQUESTED_WITH' , 'XMLHttpRequest' );
 			receiveReq.onreadystatechange = function() {
@@ -61,9 +62,12 @@ function display (category) {
 				document.getElementById('grayness').style.display = 'block';
 			}
 		}
-
-		document.getElementById('date').onchange = validateDate;
 	};
+	if(document.URL.indexOf("conformance") < 0) {
+		if(!Modernizr.smil || !Modernizr.svg || !Modernizr.inlinesvg) { window.location = '/pages/conformance'; }
+	}
+
+
 </script>
 
 
@@ -221,8 +225,8 @@ function display (category) {
 					$tick = 0;
 					foreach($_SESSION['queries'] as $row)
 					{
-						$qprint .= "<li><strong>" . $row['sum'] . "</strong> " . $row['query'] . "</li>";
-						$sum += $row['sum'];
+						$qprint .= "<li> " . $row['query'] . "</li>";
+						//$sum += $row['sum'];
 						$tick++;
 					}
 					$qprint .= "<li></li><li>Summary: $tick queries in $sum seconds</li>\n</ul>";

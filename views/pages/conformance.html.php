@@ -1,22 +1,36 @@
-<pre><?php
-	$browser = get_browser();
-	print_r($browser);
-	if($browser->browser == 'IE' && $browser->majorver < 8)
-	{
-   ?>
-</pre>
-<div class="noticebox" style="border: solid 2px red">
-<p>Du använder en utdaterad webbläsare, denna sida kommer inte att visas rätt och en del funktioner kommer inte att fungera.</p>
-<p>Vi rekommenderar att du uppgraderar till <?=$this->html->link('Internet Explorer 9', 'http://windows.microsoft.com/sv-SE/internet-explorer/products/ie/home');?> eller testar en annan webbläsare, såsom</p>
-<ul>
-	<li><?=$this->html->link('Firefox', 'http://www.getfirefox.com');?></li>
-	<li><?=$this->html->link('Google Chrome', 'http://www.google.com/chrome');?></li>
-	<li><?=$this->html->link('Opera', 'http://www.opera.com/browser/download/');?></li>
-</ul>
-</div>
-<?php } elseif($browser->browser == 'IE' && $browser->majorver == 8 && ($browser->platform == 'Win7' || $browser->platform == 'WinVista')) {?>
 
-<div class="noticebox" style="border: solid 2px red">
-	Du bör uppdatera till <?=$this->html->link('Internet Explorer 9', 'http://windows.microsoft.com/sv-SE/internet-explorer/products/ie/home');?>
+<div class="noticebox" style="border: solid 1px black">
+<p>Här på Coresys ligger vi i framkant på tekniken för att leverera den bästa tänkbara användarupplevelsen. Det gör tyvärr inte din webbläsare.</p>
+<p>Vi rekommenderar att du byter till <?=$this->html->link('Google Chrome', 'http://www.google.com/chrome');?> eftersom den är liten, smidig och stödjer nästan alla web-tekniker.</p>
+<p>Alternativet för dig med Internet Explorer är att installera <?=$this->html->link('ChromeFrame', 'http://www.google.com/chromeframe');?>, det tar bara några sekunder.</p>
+
 </div>
+
+<script language="JavaScript" type="text/javascript">
+window.onload = function() {
+	<?php
+		$arr = array(	'Scalable Vector Graphics' => 'svg',
+						'Inline SVG' => 'inlinesvg',
+						'Synchronied Multimedia Integration Language' => 'smil',
+						'HashChange' => 'hashchange',
+						'Cross-window messaging' => 'postmessage',
+						'Session Storage' => 'sessionstorage',
+						'CSS: border radius' => 'borderradius',
+						'CSS: box shadow' => 'boxshadow',
+						'CSS: opacity' => 'opacity',
+						'CSS: rgba' => 'rgba',
+						'CSS: animations' => 'cssanimations',
+						'CSS: columns' => 'csscolumns');
+		foreach($arr as $test)
+			echo "if(Modernizr.$test) { document.getElementById('$test').style.border = 'solid 2px #467F0D'; };";
+	?>
+}
+
+</script>
+
+<?php
+	foreach($arr as $desc => $id) { ?>
+	<div id="<?=$id;?>" class="noticebox" style="border: solid 2px red; border-radius: 5px;">
+		<?=$desc;?>
+	</div>
 <?php } ?>
