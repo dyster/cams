@@ -31,7 +31,8 @@ class UsersController extends \lithium\action\Controller {
     }
 
 	public function login() {
-
+		if($this->request->is('ajax'))
+			$this->_render['layout'] = false;
 		if(!empty($this->request->data))
 		{
 			if(Auth::check('user', $this->request))
