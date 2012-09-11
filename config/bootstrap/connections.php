@@ -40,11 +40,11 @@ use lithium\data\Connections;
 /**
  * Uncomment this configuration to use MongoDB as your default database.
  */
- /*Connections::add('mongo', array(
+ Connections::add('mongo', array(
  	'type' => 'MongoDb',
  	'host' => 'localhost',
  	'database' => 'cams'
- )); */
+ ));
 
 /**
  * Uncomment this configuration to use CouchDB as your default database.
@@ -84,23 +84,23 @@ Connections::get('default')->applyFilter('_execute', function($self, $params, $c
 	
 	$ctrl = $chain->next($self, $params, $chain);
     
-	/*
-	$sql = mysql_query('SHOW PROFILE');
+
+	//$sql = mysql_query('SHOW PROFILE');
 		
 	$arr['query'] = $params['sql'];
 	$sum = 0; 
-	while($row = mysql_fetch_array($sql))
-	{
-		$arr['profile'][] = $row;
-		$sum += $row[1];
-	}
-	$arr['sum'] = $sum;
+	//while($row = mysql_fetch_array($sql))
+	//{
+	//	$arr['profile'][] = $row;
+	//	$sum += $row[1];
+	//}
+	//$arr['sum'] = $sum;
 		
 	//$_SESSION['queries'][] = $arr;
 	$qs = lithium\storage\Session::read('queries');
 	$qs[] = $arr;
 	lithium\storage\Session::write('queries', $qs);
-	*/
+
 	return $ctrl;
 });
 
