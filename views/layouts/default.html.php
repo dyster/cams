@@ -37,7 +37,7 @@ function display (category) {
 	function fetch(id, url) {
 		if (receiveReq.readyState == 4 || receiveReq.readyState == 0) {
 			document.getElementById(id).innerHTML = '<embed src="<?=$this->path('img/spinner.svg');?>" />'; // '<div style="background-color: #FFFFFF;" class="shadow">Laddar, var god dröj</div>';
-			receiveReq.open("GET", 'http://cams.coresys.se/' + url, true);
+			receiveReq.open("GET", '<?=$this->path();?>' + url, true);
 			receiveReq.setRequestHeader( 'X_REQUESTED_WITH' , 'XMLHttpRequest' );
 			receiveReq.onreadystatechange = function() {
 				if (receiveReq.readyState == 4) {
@@ -86,7 +86,7 @@ function display (category) {
 
 			?>
 			<br />
-			<img src="http://coresys.se/images/system.png" alt="logo" style="float: right;" />
+			<img src="/img/coresys.png" alt="logo" style="float: right;" />
 	</div>
 
 		<div id="header">
@@ -94,8 +94,8 @@ function display (category) {
 		</div>
 		<!--<div id="topmenu">
 			<ul>
-				<li><?=$this->html->link('Fordon','objects/index', array('class' => 'knapp'));?></li>
-				<li><?=$this->html->link('Skadeflöde','damages/index', array('class' => 'knapp'));?></li>
+				<li><?=$this->html->link('Fordon','objects::index', array('class' => 'knapp'));?></li>
+				<li><?=$this->html->link('Skadeflöde','damages::index', array('class' => 'knapp'));?></li>
 			</ul>
 		</div> -->
 		<div id="left-bar">
@@ -111,12 +111,12 @@ function display (category) {
 			<div class="shadow menudiv">
 				<label>Skadehantering</label>
 				<ul>
-					<li><?=$this->html->link('Hem', 'news/index');?></li>
-					<li><?=$this->html->link('Bläddra', 'damages/browse');?></li>
-					<li><?=$this->html->link('Fordon', 'objects/index');?></li>
-					<li><?=$this->html->link('Skadeflöde', 'damages/index');?></li>
-					<li><?=$this->html->link('Ägare', 'owners/index');?></li>
-					<li><?=$this->html->link('Statistik', 'damages/statistics');?></li>
+					<li><?=$this->html->link('Hem', 'news::index');?></li>
+					<li><?=$this->html->link('Bläddra', 'damages::browse');?></li>
+					<li><?=$this->html->link('Fordon', 'objects::index');?></li>
+					<li><?=$this->html->link('Skadeflöde', 'damages::index');?></li>
+					<li><?=$this->html->link('Ägare', 'owners::index');?></li>
+					<li><?=$this->html->link('Statistik', 'damages::statistics');?></li>
 				</ul>
 			</div>
 
@@ -148,8 +148,8 @@ function display (category) {
 			<div class="shadow menudiv">
 				<label>Projekt</label>
 				<ul>
-					<li><?=$this->html->link('Index', 'projects/index');?></li>
-					<li><?=$this->html->link('Kioskläge', 'projects/kiosk');?></li>
+					<li><?=$this->html->link('Index', '/projects/index');?></li>
+					<li><?=$this->html->link('Kioskläge', '/projects/kiosk');?></li>
 				</ul>
 			</div>
 
@@ -160,17 +160,17 @@ function display (category) {
 			if($authz)
 			{
 				if(acls::getAllowedAction($authz['id'], 'users', 'index'))
-					$adminmenu['Användare'][] = array('show' => 'Index', 'link' => 'users/index', 'popup' => 0);
+					$adminmenu['Användare'][] = array('show' => 'Index', 'link' => '/users/index', 'popup' => 0);
 				if(acls::getAllowedAction($authz['id'], 'users', 'add'))
-					$adminmenu['Användare'][] = array('show' => 'Lägg till', 'link' => 'users/add', 'popup' => 1);
+					$adminmenu['Användare'][] = array('show' => 'Lägg till', 'link' => '/users/add', 'popup' => 1);
 				if(acls::getAllowedAction($authz['id'], 'tickets', 'index'))
-					$adminmenu['Tickets'][] = array('show' => 'Index', 'link' => 'tickets/index', 'popup' => 0);
+					$adminmenu['Tickets'][] = array('show' => 'Index', 'link' => '/tickets/index', 'popup' => 0);
 				if(acls::getAllowedAction($authz['id'], 'objects', 'add'))
-					$adminmenu['Fordon'][] = array('show' => 'Lägg till', 'link' => 'objects/add', 'popup' => 1);
+					$adminmenu['Fordon'][] = array('show' => 'Lägg till', 'link' => '/objects/add', 'popup' => 1);
 				if(acls::getAllowedAction($authz['id'], 'news', 'add'))
-					$adminmenu['Nyheter'][] = array('show' => 'Lägg till', 'link' => 'news/add', 'popup' => 1);
+					$adminmenu['Nyheter'][] = array('show' => 'Lägg till', 'link' => '/news/add', 'popup' => 1);
 				if(acls::getAllowedAction($authz['id'], 'projects', 'add'))
-					$adminmenu['Projekt'][] = array('show' => 'Lägg till', 'link' => 'projects/add', 'popup' => 1);
+					$adminmenu['Projekt'][] = array('show' => 'Lägg till', 'link' => '/projects/add', 'popup' => 1);
 			} ?>
 
 			<?php

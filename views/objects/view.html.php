@@ -51,6 +51,9 @@
 			<td>Prio</td><td><?=$damage->prio;?></td>
 		</tr>
 		<tr>
+			<td>Plats</td><td><?=$damage->location;?></td>
+		</tr>
+		<tr>
 			<td>Fritext</td><td><span style="font-style: italic;"><?=$damage->notes;?></span></td>
 		</tr>
 		<tr>

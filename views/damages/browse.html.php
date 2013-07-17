@@ -34,7 +34,7 @@
 <table>
 	<thead>
 		<tr>
-			<th style="width: 20px;">ID</th><th style="width: 110px;">Inlagd</th><th style="width: 20px;">Prio</th><th style="width: 150px;">Fordon</th><th style="width: 20px;">Grupp</th><th>Skada</th><th style="width: 120px;">Inlagd av</th>
+			<th style="width: 20px;">ID</th><th style="width: 110px;">Inlagd</th><th style="width: 20px;">Prio</th><th style="width: 150px;">Fordon</th><th style="width: 20px;">Grupp</th><th>Skada</th><th style="width: 120px;">Inlagd av</th><th>Plats</th>
 		</tr>
 	</thead>
 	<?php foreach($posts as $damage) { $object = $damage->getObject(); ?>
@@ -47,10 +47,11 @@
 		case (2): echo 'background: #3bb9ff;'; break; // gul = #fbf678
 		default: echo ''; break;
 	} ?>"><?=$damage->prio;?></td>
-		<td> <?=$this->html->link($object->toString(), 'objects/view/'.$object->id);?></td>
+		<td> <?=$this->html->link($object->toString(), 'objects::view'.$object->id);?></td>
 		<td><?=$object->group;?></td>
-		<td><?=$this->html->link($damage->short, 'damages/view/'.$damage->id);?></td>
+		<td><?=$this->html->link($damage->short, 'damages::view'.$damage->id);?></td>
 		<td><?=$damage->getCreatedBy()->fullname;?></td>
+		<td><?=$damage->location;?></td>
 	</tr>	
 	<?php } ?>
 </table>

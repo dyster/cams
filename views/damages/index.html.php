@@ -17,9 +17,9 @@
 		case (2): echo 'background: #3bb9ff;'; break; // gul = #fbf678
 		default: echo ''; break;
 	} ?>"><?=$damage->prio;?></td>
-		<td> <?=$this->html->link($object->toString(), 'objects/view/'.$object->id);?></td>
+		<td> <?=$this->html->link($object->toString(), 'objects::view'.$object->id);?></td>
 		<td><?=$object->group;?></td>
-		<td><?=$this->html->link($damage->short, 'damages/view/'.$damage->id);?></td>
+		<td><?=$this->html->link($damage->short, 'damages::view'.$damage->id);?></td>
 		<td><?=$damage->getCreatedBy()->fullname;?></td>
 	</tr>
 	<?php } ?>
@@ -47,9 +47,9 @@
 		default: echo ''; break;
 	} ?>"><?=$damage->prio;?></td>
 		<!--<td><?=(strtotime($damage->modified) > 0)?$damage->modified:"N/A";?></td>-->
-		<td> <?=$this->html->link($object->toString(), 'objects/view/'.$object->id);?></td>
+		<td> <?=$this->html->link($object->toString(), 'objects::view'.$object->id);?></td>
 		<td><?=$object->group;?></td>
-		<td><?=$this->html->link($damage->short, 'damages/view/'.$damage->id);?></td>
+		<td><?=$this->html->link($damage->short, 'damages::view'.$damage->id);?></td>
 
 
 		<td><?=$damage->getNulledBy()->fullname;?></td>
@@ -80,9 +80,9 @@
 		case (2): echo 'background: #3bb9ff;'; break;
 		default: echo ''; break;
 	} ?>"><?=$damage->prio;?></td>
-		<td> <?=$this->html->link($object->toString(), 'objects/view/'.$object->id);?></td>
+		<td> <?=$this->html->link($object->toString(), 'objects::view'.$object->id);?></td>
 		<td><?=$object->group;?></td>
-		<td><?=$this->html->link($damage->short, 'damages/view/'.$damage->id);?></td>
+		<td><?=$this->html->link($damage->short, 'damages::view'.$damage->id);?></td>
 
 		<td><?=$damage->getModifiedBy()->fullname;?></td>
 	</tr>

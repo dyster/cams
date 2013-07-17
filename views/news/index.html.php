@@ -24,7 +24,7 @@
 	<?php foreach($usertickets as $ticket) { ?>
 	<tr>
 		<td><?=$ticket->id;?></td>
-		<td><?=$this->html->link($ticket->title, 'tickets/view/'.$ticket->id);?></td>
+		<td><?=$this->html->link($ticket->title, 'tickets::view'.$ticket->id);?></td>
 		<td><?=$ticket->type;?></td>
 		<td><?=substr($ticket->created, 0, 16);?></td>
 		<?php $c = $ticket->getCommentsCount();?>
@@ -33,7 +33,7 @@
 		{
 			$linktext = $c . ' [Läs] ';
 			if($ticket->updated) $linktext .= ' ! Uppdaterad !';
-			echo '<td>'.$this->html->link($linktext, 'tickets/view/'.$ticket->id);
+			echo '<td>'.$this->html->link($linktext, 'tickets::view'.$ticket->id);
 			echo '</td>';
 		}  
 		?>

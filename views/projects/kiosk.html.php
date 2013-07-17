@@ -11,11 +11,11 @@
 	</thead>
 <?php foreach($projects as $p){ ?>
 	<tr>
-		<td style="padding: 0px 5px 0px 5px; background-color: <?=$p->colour;?>;" class="strong"><?=$this->html->link($p->project_nr, 'projects/view/'.$p->id);?></td>
+		<td style="padding: 0px 5px 0px 5px; background-color: <?=$p->colour;?>;" class="strong"><?=$this->html->link($p->project_nr, '/projects/view/'.$p->id);?></td>
 		<td style="padding: 0px 5px 0px 5px" class="strong"><?=$p->typ;?></td>
 		<td style="padding: 0px 5px 0px 5px" class="strong"><?=$p->fordon;?></td>
 		<td><?=$p->ort;?></td>
-		<td style="padding: 0px 5px 0px 5px" class="strong"><?=$this->html->link($p->description, 'projects/view/'.$p->id);?></td>
+		<td style="padding: 0px 5px 0px 5px" class="strong"><?=$this->html->link($p->description, '/projects/view/'.$p->id);?></td>
 	</tr>
 <?php } ?>
 </table>

@@ -20,6 +20,9 @@
 			<td>Prio</td><td><?=$damage->prio;?></td>
 		</tr>
 		<tr>
+			<td>Plats</td><td><?=$damage->location;?></td>
+		</tr>
+		<tr>
 			<td>ID</td><td><?=$damage->id;?></td>
 		</tr>
 		<tr>
