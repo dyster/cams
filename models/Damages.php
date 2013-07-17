@@ -59,7 +59,7 @@ Damages::applyFilter('save', function($self, $params, $chain){
 			$record->createdby = $_SESSION['user']['id'];
 		}
 		
-	Logs::CheckFields($params, 'damages', array('prio', 'short', 'notes', 'active', 'code'));
+	Logs::CheckFields($params, 'damages', array('prio', 'short', 'notes', 'active', 'code', 'location'));
 		
     $params['entity'] = $record;
     return $chain->next($self, $params, $chain);
