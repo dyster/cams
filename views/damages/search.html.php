@@ -9,8 +9,8 @@
 	<?php foreach($damages as $damage) { $object = $damage->getObject(); ?>
 	<tr>
 		<td><?=substr($damage->created, 0, 16);?></td>
-		<td> <?=$this->html->link($object->toString(), 'objects::view'.$object->id);?></td>
-		<td><?=$this->html->link($damage->short, 'damages::view'.$damage->id);?></td>
+		<td> <?=$this->html->link($object->toString(), '/objects/view/'.$object->id);?></td>
+		<td><?=$this->html->link($damage->short, '/damages/view/'.$damage->id);?></td>
 		<td style="<?php switch($damage->prio)
 	{
 		case (1): echo 'background: #fd8888;'; break;
@@ -34,7 +34,7 @@
 <?php foreach ($objects as $object) 
 { ?>
 	<tr>
-    	<td><?=$object->getType()->name; ?></td><td><?=$this->html->link($object->name, 'objects::view'.$object->id);?></td><td><?=$object->getOwner()->name; ?></td>
+    	<td><?=$object->getType()->name; ?></td><td><?=$this->html->link($object->name, '/objects/view/'.$object->id);?></td><td><?=$object->getOwner()->name; ?></td>
     </tr>
 <?php } ?>
 </table>

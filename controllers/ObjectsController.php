@@ -25,6 +25,20 @@ class ObjectsController extends \lithium\action\Controller {
 		
 		return compact('objects', 'prioobjects');
 	}
+
+    public function groups() {
+        $temp = Objects::all(array('fields' => array('group')));
+        foreach($temp as $t)
+            !empty($t->group) ? $groupnames[] = $t->group : null;
+        $groupnames = array_unique($groupnames);
+        foreach($groupnames as $t)
+        {
+            $groups[$t] = Objects::all(array('conditions' => array('group' => $t)));
+        }
+        $groups['Ogrupperade'] = Objects::all(array('conditions' => array('group' => '')));
+
+        return compact('groups');
+    }
 	
 	public function view($objectID) {
 		
@@ -48,7 +62,7 @@ class ObjectsController extends \lithium\action\Controller {
 		if($this->request->data && $object->save($this->request->data))
 		{
 			FlashMessage::Write('Fordon ändrat', array('class' => 'success'));
-            return $this->redirect('objects/view/'.$object->id);
+            return $this->redirect('/objects/view/'.$object->id);
 		}
 		
 		foreach(Owners::all() as $owner)
@@ -120,7 +134,7 @@ class ObjectsController extends \lithium\action\Controller {
 		if($this->request->is('ajax'))
 			$this->_render['layout'] = false;
 
-		$types = Types::all(array('with' => array('Objects')));
+		$types = Types::all(array('with' => array('Objects'), 'order' => 'name'));
 
 		$selObj = Session::read('objectID');
 

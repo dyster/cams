@@ -70,7 +70,7 @@ use lithium\data\Connections;
 Connections::add('default', array(
  	'type' => 'database',
  	'adapter' => 'MySql',
- 	'host' => 'coresys.se',
+ 	'host' => 'localhost',
  	'login' => 'li_kss',
  	'password' => 'PEeJJrvW9MmK7Uj6',
  	'database' => 'li_kss'

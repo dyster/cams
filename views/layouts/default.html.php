@@ -115,6 +115,7 @@ function display (category) {
 					<li><?=$this->html->link('Bläddra', 'damages::browse');?></li>
 					<li><?=$this->html->link('Fordon', 'objects::index');?></li>
 					<li><?=$this->html->link('Skadeflöde', 'damages::index');?></li>
+                    <li><?=$this->html->link('Grupper', 'objects::groups');?></li>
 					<li><?=$this->html->link('Ägare', 'owners::index');?></li>
 					<li><?=$this->html->link('Statistik', 'damages::statistics');?></li>
 				</ul>
@@ -160,17 +161,17 @@ function display (category) {
 			if($authz)
 			{
 				if(acls::getAllowedAction($authz['id'], 'users', 'index'))
-					$adminmenu['Användare'][] = array('show' => 'Index', 'link' => '/users/index', 'popup' => 0);
+					$adminmenu['Användare'][] = array('show' => 'Index', 'link' => 'users/index', 'popup' => 0);
 				if(acls::getAllowedAction($authz['id'], 'users', 'add'))
-					$adminmenu['Användare'][] = array('show' => 'Lägg till', 'link' => '/users/add', 'popup' => 1);
+					$adminmenu['Användare'][] = array('show' => 'Lägg till', 'link' => 'users/add', 'popup' => 1);
 				if(acls::getAllowedAction($authz['id'], 'tickets', 'index'))
-					$adminmenu['Tickets'][] = array('show' => 'Index', 'link' => '/tickets/index', 'popup' => 0);
+					$adminmenu['Tickets'][] = array('show' => 'Index', 'link' => 'tickets/index', 'popup' => 0);
 				if(acls::getAllowedAction($authz['id'], 'objects', 'add'))
-					$adminmenu['Fordon'][] = array('show' => 'Lägg till', 'link' => '/objects/add', 'popup' => 1);
+					$adminmenu['Fordon'][] = array('show' => 'Lägg till', 'link' => 'objects/add', 'popup' => 1);
 				if(acls::getAllowedAction($authz['id'], 'news', 'add'))
-					$adminmenu['Nyheter'][] = array('show' => 'Lägg till', 'link' => '/news/add', 'popup' => 1);
+					$adminmenu['Nyheter'][] = array('show' => 'Lägg till', 'link' => 'news/add', 'popup' => 1);
 				if(acls::getAllowedAction($authz['id'], 'projects', 'add'))
-					$adminmenu['Projekt'][] = array('show' => 'Lägg till', 'link' => '/projects/add', 'popup' => 1);
+					$adminmenu['Projekt'][] = array('show' => 'Lägg till', 'link' => 'projects/add', 'popup' => 1);
 			} ?>
 
 			<?php

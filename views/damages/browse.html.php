@@ -17,16 +17,16 @@
 
 <div>
         <?php if($page > 1):?>
-                <?=$this->html->link('< Föregående', array('Damages::browse', 'page'=> $page - 1));?>
+                <?=$this->html->link('< Föregående', array('damages::browse', 'page'=> $page - 1));?>
         <?php endif;?>        <?php if($total > ($limit * $page)):?>
-                <?=$this->html->link('Nästa >', array('Damages::browse', 'page'=> $page + 1));?>
+                <?=$this->html->link('Nästa >', array('damages::browse', 'page'=> $page + 1));?>
         <?php endif;?>
         
 </div>
 <div>
 	<?php for($i=1;$i<$total/$limit+1;$i++) {?>
       		<?php if($i == $page):?><strong><?php endif;?>
-        	<?=$this->html->link($i, array('Damages::browse', 'page'=> $i));?>
+        	<?=$this->html->link($i, array('damages::browse', 'page'=> $i));?>
         	<?php if($i == $page):?></strong><?php endif;?>
         <?php } ?>
 </div>
@@ -47,9 +47,9 @@
 		case (2): echo 'background: #3bb9ff;'; break; // gul = #fbf678
 		default: echo ''; break;
 	} ?>"><?=$damage->prio;?></td>
-		<td> <?=$this->html->link($object->toString(), 'objects::view'.$object->id);?></td>
+		<td> <?=$this->html->link($object->toString(), '/objects/view/'.$object->id);?></td>
 		<td><?=$object->group;?></td>
-		<td><?=$this->html->link($damage->short, 'damages::view'.$damage->id);?></td>
+		<td><?=$this->html->link($damage->short, '/damages/view/'.$damage->id);?></td>
 		<td><?=$damage->getCreatedBy()->fullname;?></td>
 		<td><?=$damage->location;?></td>
 	</tr>	

@@ -59,7 +59,7 @@
 		<tr>
 			<td>Skapad</td><td><?=substr($damage->created, 0, 16);?> by <?=$damage->getCreatedBy()->fullname;?></td>
 		</tr>
-		<?php if(strtotime($damage->modified) > 0) echo "<tr><td>Ändrad</td><td> ".substr($damage->modified, 0 ,16)." av {$damage->getModifiedBy()->fullname}</td></tr>"; ?> 
+		<?php if($damage->modifiedby > 0) echo "<tr><td>Ändrad</td><td> ".substr($damage->modified, 0 ,16)." av {$damage->getModifiedBy()->fullname}</td></tr>"; ?>
 		
 		
 		

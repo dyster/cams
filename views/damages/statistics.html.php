@@ -8,7 +8,7 @@
 <?php foreach ($objectDist as $key => $val) 
 { $object = cams\models\Objects::first($key) ?>
 	<tr>
-    	<td><?=$objectDist[$object->id];?></td><td><?=$object->getType()->name; ?></td><td><?=$this->html->link($object->name, 'objects::view'.$object->id);?></td><td><?=$object->getOwner()->name; ?></td>
+    	<td><?=$objectDist[$object->id];?></td><td><?=$object->getType()->name; ?></td><td><?=$this->html->link($object->name, '/objects/view/'.$object->id);?></td><td><?=$object->getOwner()->name; ?></td>
     </tr>
 <?php } ?>
 </table>
@@ -28,93 +28,52 @@
 <?php } ?>
 </table>
 
-<table>
-	<thead>
-		<tr>
-			<th>2011</th><?php for($i=1;$i<13;$i++) echo "<th>$i</th>"; ?>
-		</tr>
-	</thead>
-	<tr>
-		<td>Rapporterade skador</td>
-<?php foreach ($stats[2011] as $m)
-{ ?>
-        <td><?=$m['reported'];?></td>
-<?php } ?>
-	</tr>
-    <tr>
-    	<td>Kvitterade skador</td>
-<?php foreach ($stats[2011] as $m)
-{ ?>
-        <td><?=$m['nulled'];?></td>
-<?php } ?>
-    </tr>
-    <tr>
-    	<td>Kvarvarande skador</td>
-<?php foreach ($stats[2011] as $m)
-{ ?>
-        <td><?=$m['remaining'];?></td>
-<?php } ?>
-    </tr>
-</table>
+<p>Totalt antal skador: <?=$damtotal;?></p>
+<p>Kvarvarande skador: <?=$damremain;?></p>
 
-<table>
-	<thead>
-		<tr>
-			<th>2012</th><?php for($i=1;$i<13;$i++) echo "<th>$i</th>"; ?>
-		</tr>
-	</thead>
-	<tr>
-		<td>Rapporterade skador</td>
-<?php foreach ($stats[2012] as $m)
-{ ?>
-        <td><?=$m['reported'];?></td>
-<?php } ?>
-	</tr>
-    <tr>
-    	<td>Kvitterade skador</td>
-<?php foreach ($stats[2012] as $m)
-{ ?>
-        <td><?=$m['nulled'];?></td>
-<?php } ?>
-    </tr>
-    <tr>
-    	<td>Kvarvarande skador</td>
-<?php foreach ($stats[2012] as $m)
-{ ?>
-        <td><?=$m['remaining'];?></td>
-<?php } ?>
-    </tr>
-</table>
-
+<?php foreach( $stats as $year => $stat ) { ?>
 <table>
     <thead>
     <tr>
-        <th>2013</th><?php for($i=1;$i<13;$i++) echo "<th>$i</th>"; ?>
+        <th><?=$year;?></th><?php for($i=1;$i<13;$i++) echo "<th>$i</th>"; ?>
     </tr>
     </thead>
     <tr>
         <td>Rapporterade skador</td>
-        <?php foreach ($stats[2013] as $m)
-    { ?>
-        <td><?=$m['reported'];?></td>
+        <?php foreach ($stat as $m)
+        { ?>
+            <td><?=$m['reported'];?></td>
+        <?php } ?>
+    </tr>
+    <tr>
+        <td>Varav kvarstår</td>
+        <?php foreach ($stat as $m)
+        { ?>
+            <td><?=$m['remaining'];?></td>
         <?php } ?>
     </tr>
     <tr>
         <td>Kvitterade skador</td>
-        <?php foreach ($stats[2013] as $m)
-    { ?>
-        <td><?=$m['nulled'];?></td>
+        <?php foreach ($stat as $m)
+        { ?>
+            <td><?=$m['nulled'];?></td>
         <?php } ?>
     </tr>
     <tr>
         <td>Kvarvarande skador</td>
-        <?php foreach ($stats[2013] as $m)
-    { ?>
-        <td><?=$m['remaining'];?></td>
+        <?php foreach ($stat as $m)
+        { ?>
+            <td><?=$m['totalremaining'];?></td>
         <?php } ?>
     </tr>
 </table>
-
+<?php } ?>
+<p>
+    Rapporterade skador: Inrapporterade den månaden</br>
+    Varav kvarstår: De skador rapporterade den månaden som fortfarande inte är kvitterade</br>
+    Kvitterade skador: Kvitterade den månaden (även äldre)</br>
+    Kvarvarande skador: Det antalet som var okvitterade just då (i slutet på månaden)
+</p>
 <?php
  // Width and height of the graph
 $width = 600; $height = 200;

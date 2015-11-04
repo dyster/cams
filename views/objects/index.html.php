@@ -13,7 +13,7 @@
     	<td><?=substr($object->getPrio1Date(),0,10);?></td>
     	<td><?=$object->getPrio1Location();?></td>
     	<td><?=$object->getType()->name; ?></td>
-    	<td><?=$this->html->link($object->name, 'objects::view'.$object->id);?></td>
+    	<td><?=$this->html->link($object->name, '/objects/view/'.$object->id);?></td>
     	<td><?=$object->group;?></td>
     	<td><?=$object->getOwner()->name; ?></td>
     </tr>
@@ -37,7 +37,7 @@
 	<tr>
     	<td><?=substr($object->created,0,10);?></td>
     	<td><?=$object->getType()->name; ?></td>
-    	<td><?=$this->html->link($object->name, 'objects::view'.$object->id);?></td>
+    	<td><?=$this->html->link($object->name, '/objects/view/'.$object->id);?></td>
     	<td><?=$object->group;?></td>
     	<td><?=$object->getOwner()->name; ?></td>
     </tr>

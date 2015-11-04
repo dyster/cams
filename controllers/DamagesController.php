@@ -20,10 +20,23 @@ class DamagesController extends \lithium\action\Controller {
 	public function search() {
 		if($this->request->data['q'])
 		{
-			$q = $this->request->data['q'];
-			$damages = Damages::all(array('conditions' => "`short` LIKE '%$q%' OR `notes` LIKE '%$q%' OR `nulltext` LIKE '%$q%'", 'limit' => 30));
-			$objects = Objects::all(array('conditions' => "`name` LIKE '%$q%' OR `notes` LIKE '%$q%'", 'limit' => 30));
-			$news = News::all(array('conditions' => "`post` LIKE '%$q%'", 'limit' => 30));
+			$q = implode('.?',str_split($this->request->data['q']));
+			$q = '.*'.$q.'.*';
+			$damages = Damages::all(array('conditions' => "`short` REGEXP '$q' OR `notes` REGEXP '$q' OR `nulltext` REGEXP '$q'", 'limit' => 30));
+			//$objects = Objects::all(array('conditions' => "`name` REGEXP '$q' OR `notes` REGEXP '$q'", 'limit' => 30));
+			$objects = Objects::all(array('conditions' => array('or' => array("`name` REGEXP '$q'", "`notes` REGEXP '$q'"), 'active' => 1), 'limit' => 30));
+			$news = News::all(array('conditions' => "`post` REGEXP '$q'", 'limit' => 30));
+			$totalCount = count($damages) + count($objects);
+			if ($totalCount == 1) {
+				switch (1) {
+					case count($damages):
+						return 
+$this->redirect('/damages/view/'.$damages->current()->id);
+					case count($objects):
+						return 
+$this->redirect('/objects/view/'.$objects->current()->id);
+				}
+			}
 			return compact('damages', 'objects', 'news');
 		}
 	}
@@ -65,7 +78,7 @@ class DamagesController extends \lithium\action\Controller {
         	if($damage->save())
 			{
 				FlashMessage::Write('Skadan sparad', array('class' => 'success'));
-            	return $this->redirect('objects/view/'.$objectID);
+            	return $this->redirect('/objects/view/'.$objectID);
 			}
         }
 		
@@ -77,7 +90,7 @@ class DamagesController extends \lithium\action\Controller {
 		if($this->request->data && $damage->save($this->request->data))
 		{
 			FlashMessage::Write('Skadan ändrad', array('class' => 'success'));
-            return $this->redirect('objects/view/'.$damage->object_id);
+            return $this->redirect('/objects/view/'.$damage->object_id);
 		}
 			
 		return compact('damage');
@@ -103,7 +116,8 @@ class DamagesController extends \lithium\action\Controller {
 			if($damage->save($this->request->data))
 			{
 				FlashMessage::Write('Skadan kvitterad', array('class' => 'success'));
-	            return $this->redirect('objects/view/'.$damage->object_id);
+	            return 
+$this->redirect('/objects/view/'.$damage->object_id);
 			}
 		}
 		return compact('damage');
@@ -138,8 +152,71 @@ class DamagesController extends \lithium\action\Controller {
 		foreach($codeDist as $key => $val)
 			$groups[] = array($codeArr[$key], ($val * 100) / $damageCount . '%', $val);
 		
-		return compact('objectDist', 'groups');
+		require LITHIUM_LIBRARY_PATH . "/jpgraph/src/jpgraph.php";
+ 		require LITHIUM_LIBRARY_PATH . "/jpgraph/src/jpgraph_line.php";
+
+        $query = Damages::connection()->read("SELECT year( `created` ) FROM `damages` GROUP BY year( `created` )");
+        foreach($query as $q)
+            foreach($q as $y)
+                $years[] = $y;
+
+
+		foreach($years as $year)
+		{
+			for($i=1;$i<13;$i++)
+			{
+				$stats[$year][$i]['reported'] = Damages::count(array('conditions' => array('`created` LIKE  \''.$year.'-'.str_pad($i, 2, "0", STR_PAD_LEFT).'%\'')));
+                $stats[$year][$i]['remaining'] = Damages::count(array('conditions' => array('`created` LIKE  \''.$year.'-'.str_pad($i, 2, "0", STR_PAD_LEFT).'%\'', '`nulledby` = 0')));
+				$stats[$year][$i]['nulled'] = Damages::count(array('conditions' => array('`nulled` LIKE  \''.$year.'-'.str_pad($i, 2, "0", STR_PAD_LEFT).'%\'', '`nulledby` > 0')));
+                $stats[$year][$i]['totalremaining'] = Damages::count(array('conditions' => array('`created` <=  \''.$year.'-'.str_pad($i, 2, "0", STR_PAD_LEFT).'-31\'', '(`nulled` >  \''.$year.'-'.str_pad($i, 2, "0", STR_PAD_LEFT).'-31\' OR `nulledby` = 0)')));
+			}
+		}
+
+        $damtotal = Damages::count();
+        $damremain = Damages::count(array('conditions' => array('`nulledby` = 0')));
+
+		return compact('objectDist', 'groups', 'stats', 'damtotal', 'damremain');
 	}
+
+    public function ford() {
+        if(!$this->request->data) {
+            return array('out' => null);
+        }
+		$result = 0;
+		$paste = $this->request->data['paste'];
+		switch (1)
+		{
+			case preg_match('/^MKUS\b/m', $paste):
+				$out['type'] = 'MKUS';
+				break;
+			case preg_match('/^MSKS\b/m', $paste):
+				$out['type'] = 'MSKS';
+				$result = preg_match_all('/\n (?P<date>\d{6}) \b.*?\b (?P<text>.*?)(?P<id>\d{8}).*?\n/is', $paste, $matches);
+				break;
+			case preg_match('/^MAUS\b/m', $paste):
+				$out['type'] = 'MAUS';
+				$result = preg_match_all('/\n  (?P<date>\d{6}) \b.*?\b (?P<text>.*?)(?P<id>\d{8}).*?\n/is', $paste, $matches);
+				break;
+			case preg_match('/^MKKS\b/m', $paste):
+				$out['type'] = 'MKKS';
+				$result = preg_match_all('/\n  (?P<date>\d{6}) \b.*?\b (?P<text>.*?)(?P<id>\d{8}).*?\n/is', $paste, $matches);
+				break;
+			default:
+				$out['type'] = 'UNKNOWN';
+				$result = preg_match_all('/\n ? (?P<date>\d{6}) \b.*?\b (?P<text>.*?)(?P<id>\d{8}).*?\n/is', $paste, $matches);
+		}
+
+		if(preg_match('/Fordon: (\b.+?\b)/', $paste, $match)) {
+			$out['object'] = $match[1];
+		}
+
+		for($i=0;$i<$result;$i++)
+		{
+			$out['data'][] = array('date' => $matches['date'][$i], 'text' => trim($matches['text'][$i]), 'id' => $matches['id'][$i]);
+		}
+
+        return compact('out');
+    }
 	
 }
 
