@@ -11,7 +11,7 @@ use lithium\Storage\Session;
 class ObjectsController extends \lithium\action\Controller {
 
 	public function index($a = 20, $b = 20) {
-		$objects = Objects::find('all', array('order' => 'id DESC', 'limit' => $b));
+		$objects = Objects::find('all', array('conditions' => array('active' => 1), 'order' => 'id DESC', 'limit' => $b));
 		$prio1s = Damages::find('all', array('conditions' => array('prio' => 1, 'active' => 1), 'order' => 'created DESC', 'limit' => $a)); // , 'fields' => array('object_id')
 		$prios = array();
 		foreach($prio1s as $dam)
@@ -129,6 +129,9 @@ class ObjectsController extends \lithium\action\Controller {
 		foreach($types as $type) {
 			$controllerMenu['objects'][$type->name]['class'] = 'hide';
 			foreach($type->objects as $object) {
+				if($object->active == 0)
+					continue;
+
 				if($object->id == $selObj) {
 					$controllerMenu['objects'][$type->name]['items'][] = array('name' => '<strong>'.$object->name.'</strong>', 'link' => '/objects/view/'.$object->id);
 					$controllerMenu['objects'][$type->name]['class'] = 'show';
